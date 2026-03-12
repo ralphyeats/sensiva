@@ -218,6 +218,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   <div class="nav-r">
     <a class="nav-a" href="#process">How it works</a>
     <a class="nav-a" href="#pricing">Pricing</a>
+    <button class="nav-btn" style="background:transparent;color:var(--fg);border:1px solid rgba(238,238,232,.2);margin-right:-32px;" onclick="openAuthModal('login')">Log in</button>
     <button class="nav-btn" onclick="showDash()">Start free →</button>
   </div>
 </nav>
@@ -403,7 +404,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
     <div style="display:flex;align-items:center;gap:14px;">
       <span style="font-size:12px;color:var(--muted);">Free — 1/3 used</span>
       <button class="dadd-btn" style="font-size:12px;padding:8px 18px;">Upgrade →</button>
-      <button class="dadd-btn" style="background:var(--surface);color:var(--fg);border:1px solid var(--border);" onclick="showLanding()">← Home</button>
+      <button class="dadd-btn" style="background:var(--surface);color:var(--fg);border:1px solid var(--border);" onclick="doLogout()">Log out</button>
     </div>
   </nav>
 
@@ -464,7 +465,14 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// ── SUPABASE ──
+const SUPA_URL='https://cpouxavypczsggfylhpp.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwb3V4YXZ5cGN6c2duZnlsaHBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyOTk4OTIsImV4cCI6MjA4ODg3NTg5Mn0.lHAo4Q0Ey1Hpr4_jgNPp2I8JKz0Hh4sJiL_o6_XMT6k';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
+var currentUser=null;
+
 // ── CURSOR ──
 var cx=0,cy=0,rx=0,ry=0;
 var cur=document.getElementById('cur'),ring=document.getElementById('curring');
@@ -477,13 +485,62 @@ var obs=new IntersectionObserver(function(entries){
 },{threshold:.08});
 document.querySelectorAll('.rev,.mock').forEach(function(el){obs.observe(el);});
 
+// ── AUTH ──
+async function doSignup(){
+  var email=document.getElementById('signup-email').value;
+  var pass=document.getElementById('signup-pass').value;
+  if(!email||!pass){alert('Email ve şifre girin.');return;}
+  var btn=document.getElementById('signup-btn');
+  btn.textContent='Creating account...';btn.disabled=true;
+  var {data,error}=await sb.auth.signUp({email,password:pass});
+  btn.textContent='Create account';btn.disabled=false;
+  if(error){alert('Error: '+error.message);return;}
+  alert('Hesap oluşturuldu! Email adresinizi onaylayın.');
+  closeAuthModal();
+}
+
+async function doLogin(){
+  var email=document.getElementById('login-email').value;
+  var pass=document.getElementById('login-pass').value;
+  if(!email||!pass){alert('Email ve şifre girin.');return;}
+  var btn=document.getElementById('login-btn');
+  btn.textContent='Logging in...';btn.disabled=true;
+  var {data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  btn.textContent='Log in';btn.disabled=false;
+  if(error){alert('Hata: '+error.message);return;}
+  currentUser=data.user;
+  closeAuthModal();
+  showDash();
+}
+
+async function doLogout(){
+  await sb.auth.signOut();
+  currentUser=null;
+  showLanding();
+}
+
+function openAuthModal(type){
+  document.getElementById('auth-modal').style.display='flex';
+  document.getElementById('auth-signup').style.display=type==='signup'?'block':'none';
+  document.getElementById('auth-login').style.display=type==='login'?'block':'none';
+}
+function closeAuthModal(){document.getElementById('auth-modal').style.display='none';}
+
+// Check existing session
+sb.auth.getSession().then(function(res){
+  if(res.data.session){
+    currentUser=res.data.session.user;
+  }
+});
+
 // ── NAV ──
 function showDash(){
+  if(!currentUser){openAuthModal('signup');return;}
   document.getElementById('landing').style.display='none';
   document.getElementById('dash').style.display='block';
   document.body.style.cursor='default';
   cur.style.display='none';ring.style.display='none';
-  renderComps();
+  loadComps();
 }
 function showLanding(){
   document.getElementById('landing').style.display='block';
@@ -552,5 +609,41 @@ function renderAllChg(){
 
 renderComps();
 </script>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:9000;align-items:center;justify-content:center;">
+  <!-- SIGNUP -->
+  <div id="auth-signup" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:440px;max-width:90vw;">
+    <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:8px;">Create account</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:32px;">Free forever. No credit card required.</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Email</div>
+      <input id="signup-email" class="dinput" type="email" placeholder="you@company.com" style="width:100%">
+    </div>
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Password</div>
+      <input id="signup-pass" class="dinput" type="password" placeholder="Min 6 characters" style="width:100%">
+    </div>
+    <button id="signup-btn" class="dadd-btn" style="width:100%;padding:14px;font-size:15px;" onclick="doSignup()">Create account →</button>
+    <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">Already have an account? <span style="color:var(--accent);cursor:pointer;" onclick="document.getElementById('auth-signup').style.display='none';document.getElementById('auth-login').style.display='block'">Log in</span></div>
+    <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:var(--muted);cursor:pointer;" onclick="closeAuthModal()">← Back</span></div>
+  </div>
+  <!-- LOGIN -->
+  <div id="auth-login" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:440px;max-width:90vw;">
+    <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:8px;">Welcome back</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:32px;">Log in to your Sensiva account</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Email</div>
+      <input id="login-email" class="dinput" type="email" placeholder="you@company.com" style="width:100%">
+    </div>
+    <div style="margin-bottom:24px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Password</div>
+      <input id="login-pass" class="dinput" type="password" placeholder="••••••••" style="width:100%">
+    </div>
+    <button id="login-btn" class="dadd-btn" style="width:100%;padding:14px;font-size:15px;" onclick="doLogin()">Log in →</button>
+    <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">No account? <span style="color:var(--accent);cursor:pointer;" onclick="document.getElementById('auth-login').style.display='none';document.getElementById('auth-signup').style.display='block'">Sign up free</span></div>
+    <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:var(--muted);cursor:pointer;" onclick="closeAuthModal()">← Back</span></div>
+  </div>
+</div>
 </body>
 </html>
