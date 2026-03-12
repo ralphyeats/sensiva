@@ -559,47 +559,37 @@ function setTab(el,tab){
 }
 
 // ── DATA ──
-var comps=[];
+var comps=[{
+  id:1,name:'Example Corp',url:'https://example.com',emoji:'🏢',status:'changes',
+  changes:[
+    {type:'price',text:'Pro plan dropped $49 → $39/mo',ai:'💡 Competing on price. Highlight your value, don\'t just match their cut.',time:'1h ago'},
+    {type:'product',text:'"Team Collaboration" feature launched',ai:'💡 Moving upmarket. Review your enterprise positioning.',time:'3h ago'},
+    {type:'content',text:'Homepage headline changed to "10x your output"',ai:'💡 Shifting to ROI messaging — likely targeting larger companies.',time:'6h ago'}
+  ]
+}];
 
-async function loadComps(){
-  if(!currentUser){return;}
-  document.getElementById('comp-list').innerHTML='<div style="padding:40px;text-align:center;color:var(--muted)">Loading...</div>';
-  var res=await sb.from('competitors').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
-  if(res.error){console.error(res.error);return;}
-  comps=res.data||[];
-  document.getElementById('s-tot').textContent=comps.length;
-  renderComps();
-}
-
-async function addComp(){
-  var url=document.getElementById('in-url').value.trim();
-  var name=document.getElementById('in-name').value.trim();
+function addComp(){
+  var url=document.getElementById('in-url').value;
+  var name=document.getElementById('in-name').value;
   if(!url)return;
-  if(!url.startsWith('http'))url='https://'+url;
-  if(comps.length>=3){alert('Free plan: 3 competitors max.');return;}
-  if(!currentUser){alert('Giriş yapın');return;}
+  if(comps.length>=3){alert('Free plan: 3 competitors max. Upgrade to Pro for more.');return;}
   var domain=url.replace(/https?:\/\//,'').split('/')[0];
-  var res=await sb.from('competitors').insert([{user_id:currentUser.id,name:name||domain,url:url}]).select();
-  if(res.error){alert('Hata: '+res.error.message);return;}
+  comps.push({id:Date.now(),name:name||domain,url:url,emoji:'🌐',status:'ok',changes:[]});
   document.getElementById('in-url').value='';
   document.getElementById('in-name').value='';
-  if(res.data&&res.data[0])comps.unshift(res.data[0]);
   document.getElementById('s-tot').textContent=comps.length;
   renderComps();
 }
 
 function renderComps(){
   var el=document.getElementById('comp-list');
+  if(comps.length===0){
+    el.innerHTML='<div style="padding:60px;text-align:center;color:var(--muted);font-size:14px">No competitors yet — add one above 👆</div>';
+    return;
+  }
   el.innerHTML=comps.map(function(c){
-    var badge=c.status==='changes'
-      ?'<span class="dbadge chg">● '+c.changes.length+' changes</span>'
-      :'<span class="dbadge ok">● No changes</span>';
-    var chgs=c.changes.length>0
-      ?c.changes.map(function(ch){
-        return '<div class="dchange"><span class="dchg-tag '+ch.type+'">'+ch.type+'</span><div style="flex:1"><div class="dchg-txt">'+ch.text+'</div><div class="dchg-ai">'+ch.ai+'</div></div><div class="dchg-time">'+ch.time+'</div></div>';
-      }).join('')
-      :'<div style="padding:14px;text-align:center;color:var(--muted);font-size:13px">No changes yet — watching 👁️</div>';
-    return '<div class="dcomp"><div class="dcomp-h"><div class="dcomp-info"><div class="dcomp-av">'+c.emoji+'</div><div><div class="dcomp-name">'+c.name+'</div><div class="dcomp-url">'+c.url+'</div></div></div>'+badge+'</div>'+chgs+'</div>';
+    var initials=(c.name||'??').substring(0,2).toUpperCase();
+    return '<div class="dcomp"><div class="dcomp-h"><div class="dcomp-info"><div class="dcomp-av" style="font-family:Syne,sans-serif;font-size:14px;font-weight:700;">'+initials+'</div><div><div class="dcomp-name">'+c.name+'</div><div class="dcomp-url">'+c.url+'</div></div></div><span class="dbadge ok">● Watching</span></div><div style="padding:14px;text-align:center;color:var(--muted);font-size:13px">No changes yet — watching 👁️</div></div>';
   }).join('');
 }
 
