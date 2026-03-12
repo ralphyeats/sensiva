@@ -559,24 +559,31 @@ function setTab(el,tab){
 }
 
 // ── DATA ──
-var comps=[{
-  id:1,name:'Example Corp',url:'https://example.com',emoji:'🏢',status:'changes',
-  changes:[
-    {type:'price',text:'Pro plan dropped $49 → $39/mo',ai:'💡 Competing on price. Highlight your value, don\'t just match their cut.',time:'1h ago'},
-    {type:'product',text:'"Team Collaboration" feature launched',ai:'💡 Moving upmarket. Review your enterprise positioning.',time:'3h ago'},
-    {type:'content',text:'Homepage headline changed to "10x your output"',ai:'💡 Shifting to ROI messaging — likely targeting larger companies.',time:'6h ago'}
-  ]
-}];
+var comps=[];
 
-function addComp(){
-  var url=document.getElementById('in-url').value;
-  var name=document.getElementById('in-name').value;
+async function loadComps(){
+  if(!currentUser){return;}
+  document.getElementById('comp-list').innerHTML='<div style="padding:40px;text-align:center;color:var(--muted)">Loading...</div>';
+  var res=await sb.from('competitors').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+  if(res.error){console.error(res.error);return;}
+  comps=res.data||[];
+  document.getElementById('s-tot').textContent=comps.length;
+  renderComps();
+}
+
+async function addComp(){
+  var url=document.getElementById('in-url').value.trim();
+  var name=document.getElementById('in-name').value.trim();
   if(!url)return;
-  if(comps.length>=3){alert('Free plan: 3 competitors max. Upgrade to Pro for more.');return;}
+  if(!url.startsWith('http'))url='https://'+url;
+  if(comps.length>=3){alert('Free plan: 3 competitors max.');return;}
+  if(!currentUser){alert('Giriş yapın');return;}
   var domain=url.replace(/https?:\/\//,'').split('/')[0];
-  comps.push({id:Date.now(),name:name||domain,url:url,emoji:'🌐',status:'ok',changes:[]});
+  var res=await sb.from('competitors').insert([{user_id:currentUser.id,name:name||domain,url:url}]).select();
+  if(res.error){alert('Hata: '+res.error.message);return;}
   document.getElementById('in-url').value='';
   document.getElementById('in-name').value='';
+  if(res.data&&res.data[0])comps.unshift(res.data[0]);
   document.getElementById('s-tot').textContent=comps.length;
   renderComps();
 }
