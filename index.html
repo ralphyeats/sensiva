@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sensiva — Competitor Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#08080a;
+  --fg:#eeeee8;
+  --accent:#b8f54a;
+  --muted:#52525e;
+  --border:#18181f;
+  --surface:#0f0f14;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--fg);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+.cur{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+.cur-ring{position:fixed;width:40px;height:40px;border:1px solid rgba(184,245,74,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s;}
+body:has(a:hover) .cur, body:has(button:hover) .cur{width:16px;height:16px;}
+body:has(a:hover) .cur-ring, body:has(button:hover) .cur-ring{width:56px;height:56px;border-color:rgba(184,245,74,.6);}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 56px;mix-blend-mode:difference;}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:1px;color:var(--fg);text-transform:uppercase;}
+.nav-r{display:flex;align-items:center;gap:48px;}
+.nav-a{font-size:13px;color:rgba(238,238,232,.5);text-decoration:none;letter-spacing:.5px;transition:color .3s;cursor:none;}
+.nav-a:hover{color:var(--fg);}
+.nav-btn{font-size:13px;font-weight:600;color:var(--bg);background:var(--fg);padding:10px 24px;border-radius:100px;border:none;cursor:none;font-family:'DM Sans',sans-serif;letter-spacing:.3px;transition:background .3s;}
+.nav-btn:hover{background:var(--accent);}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 56px 72px;overflow:hidden;}
+
+.hero-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;}
+
+.hero-gradient{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 80%,rgba(184,245,74,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 20%,rgba(184,245,74,.04) 0%,transparent 50%);pointer-events:none;}
+
+.hero-bgtxt{position:absolute;bottom:-40px;left:-20px;font-family:'Syne',sans-serif;font-size:clamp(160px,22vw,320px);font-weight:800;color:transparent;-webkit-text-stroke:1px rgba(238,238,232,.03);letter-spacing:-12px;white-space:nowrap;user-select:none;pointer-events:none;line-height:1;}
+
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:36px;opacity:0;animation:fadeup .8s .1s forwards;}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+.hero-h1{font-family:'Instrument Serif',serif;font-size:clamp(60px,9vw,130px);line-height:.95;letter-spacing:-5px;max-width:1000px;margin-bottom:56px;opacity:0;animation:fadeup .9s .25s forwards;}
+.hero-h1 i{font-style:italic;color:var(--accent);}
+
+.hero-bot{display:flex;align-items:flex-end;justify-content:space-between;opacity:0;animation:fadeup .8s .45s forwards;}
+.hero-desc{font-size:16px;color:var(--muted);max-width:420px;line-height:1.85;font-weight:300;}
+.hero-ctas{display:flex;flex-direction:column;align-items:flex-end;gap:20px;}
+.btn-main{display:inline-flex;align-items:center;gap:12px;padding:18px 36px;background:var(--accent);color:var(--bg);border-radius:100px;border:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:none;letter-spacing:.2px;transition:all .3s;}
+.btn-main:hover{background:var(--fg);transform:scale(1.03);}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:18px 36px;background:transparent;color:var(--muted);border-radius:100px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:15px;cursor:none;transition:all .3s;}
+.btn-ghost:hover{color:var(--fg);border-color:rgba(238,238,232,.3);}
+
+.scroll-ind{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.scroll-line{width:48px;height:1px;background:var(--border);position:relative;overflow:hidden;}
+.scroll-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--accent);animation:slidein 2s ease-in-out infinite;}
+@keyframes slidein{to{left:100%;}}
+@keyframes fadeup{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+
+/* TICKER */
+.ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;background:var(--surface);overflow:hidden;}
+.ticker-track{display:flex;gap:56px;width:max-content;animation:tick 25s linear infinite;}
+.ticker-item{display:flex;align-items:center;gap:14px;white-space:nowrap;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTIONS */
+section{padding:120px 56px;border-top:1px solid var(--border);}
+
+/* ABOUT */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
+.about-l .sec-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;}
+.about-l h2{font-family:'Instrument Serif',serif;font-size:clamp(40px,5vw,68px);line-height:1.05;letter-spacing:-3px;margin-bottom:32px;}
+.about-l p{font-size:15px;color:var(--muted);line-height:1.95;font-weight:300;margin-bottom:40px;}
+.about-r{display:flex;flex-direction:column;gap:14px;}
+
+/* MOCK CARDS */
+.mock{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px;transform:translateX(60px);opacity:0;transition:all .9s cubic-bezier(.16,1,.3,1);}
+.mock.vis{transform:translateX(0);opacity:1;}
+.mock:nth-child(2){transition-delay:.12s;}
+.mock:nth-child(3){transition-delay:.24s;}
+.mock-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.mock-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:100px;}
+.tag-price{background:rgba(248,113,113,.12);color:#f87171;}
+.tag-prod{background:rgba(184,245,74,.12);color:var(--accent);}
+.tag-content{background:rgba(147,197,253,.12);color:#93c5fd;}
+.mock-t{font-size:13px;font-weight:500;margin-bottom:6px;line-height:1.4;}
+.mock-ai{font-size:12px;color:var(--muted);font-style:italic;line-height:1.65;}
+.mock-time{font-size:11px;color:var(--muted);}
+
+/* PROCESS */
+.process-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:80px;}
+.process-head h2{font-family:'Instrument Serif',serif;font-size:clamp(44px,6vw,80px);line-height:1.0;letter-spacing:-4px;max-width:560px;}
+.process-head p{font-size:14px;color:var(--muted);max-width:260px;line-height:1.9;}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.step{padding:48px 36px;border-right:1px solid var(--border);position:relative;transition:background .3s;}
+.step:last-child{border-right:none;}
+.step:hover{background:var(--surface);}
+.step-n{font-family:'Syne',sans-serif;font-size:80px;font-weight:800;line-height:1;color:rgba(238,238,232,.04);letter-spacing:-4px;margin-bottom:32px;}
+.step-ico{display:none;}
+.step-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:10px;letter-spacing:-.5px;}
+.step-d{font-size:13px;color:var(--muted);line-height:1.8;}
+
+/* NUMBERS */
+.numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
+.num-card{background:var(--bg);padding:64px 56px;text-align:center;}
+.num-val{font-family:'Instrument Serif',serif;font-size:clamp(60px,8vw,100px);line-height:1;letter-spacing:-4px;color:var(--accent);margin-bottom:12px;}
+.num-label{font-size:13px;color:var(--muted);letter-spacing:1px;}
+
+/* PRICING */
+.pricing-head{text-align:center;margin-bottom:80px;}
+.pricing-head h2{font-family:'Instrument Serif',serif;font-size:clamp(48px,7vw,88px);line-height:1.0;letter-spacing:-4px;margin-bottom:16px;}
+.pricing-head p{font-size:15px;color:var(--muted);font-weight:300;}
+.pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:960px;margin:0 auto;}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;position:relative;transition:border-color .3s,transform .3s;}
+.pcard:hover{border-color:rgba(184,245,74,.25);transform:translateY(-6px);}
+.pcard.featured{border-color:var(--accent);}
+.pcard-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--bg);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:100px;}
+.pcard-name{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+.pcard-price{font-family:'Syne',sans-serif;font-size:64px;font-weight:800;letter-spacing:-4px;line-height:1;}
+.pcard-price sup{font-size:28px;letter-spacing:0;vertical-align:super;}
+.pcard-per{font-size:13px;color:var(--muted);margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+.pcard-feats{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px;}
+.pcard-feats li{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px;}
+.pcard-feats li::before{content:'→';color:var(--accent);}
+.pcard-btn{width:100%;padding:14px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:none;transition:all .3s;border:none;}
+.pcard-btn-p{background:var(--accent);color:var(--bg);}
+.pcard-btn-p:hover{background:var(--fg);}
+.pcard-btn-g{background:transparent;color:var(--fg);border:1px solid var(--border);}
+.pcard-btn-g:hover{border-color:var(--fg);}
+
+/* CTA BOTTOM */
+.cta-bot{text-align:center;background:var(--surface);}
+.cta-bot h2{font-family:'Instrument Serif',serif;font-size:clamp(52px,8vw,108px);line-height:.95;letter-spacing:-5px;margin-bottom:48px;}
+.cta-bot h2 i{font-style:italic;color:var(--accent);}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-items:center;justify-content:space-between;}
+.foot-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:1px;text-transform:uppercase;}
+.foot-copy{font-size:12px;color:var(--muted);}
+
+/* REVEAL */
+.rev{opacity:0;transform:translateY(48px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+.rev.vis{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+
+/* ─── DASHBOARD ─── */
+#dash{display:none;min-height:100vh;padding-top:73px;}
+.dash-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:rgba(8,8,10,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 73px);}
+.dsidebar{background:var(--surface);border-right:1px solid var(--border);padding:28px 14px;position:sticky;top:73px;height:calc(100vh - 73px);}
+.dsidebar-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;margin-bottom:3px;}
+.dsidebar-item:hover,.dsidebar-item.act{background:rgba(184,245,74,.07);color:var(--fg);}
+.dsidebar-item.act{color:var(--accent);}
+.dmain{padding:40px;overflow-y:auto;}
+.dtitle{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:32px;}
+.dstats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+.dstat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;}
+.dstat-l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.dstat-v{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;letter-spacing:-2px;}
+.dstat-v.g{color:var(--accent);}
+.dstat-v.y{color:#fbbf24;}
+.dadd{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:24px;}
+.dadd-t{font-size:13px;font-weight:600;margin-bottom:14px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.drow{display:flex;gap:10px;}
+.dinput{flex:1;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.dinput:focus{border-color:var(--accent);}
+.dinput::placeholder{color:var(--muted);}
+.dadd-btn{padding:12px 20px;background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.dadd-btn:hover{background:var(--fg);}
+.dcomp{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:14px;transition:border-color .3s;}
+.dcomp:hover{border-color:rgba(184,245,74,.25);}
+.dcomp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.dcomp-info{display:flex;align-items:center;gap:14px;}
+.dcomp-av{width:42px;height:42px;border-radius:10px;background:rgba(184,245,74,.09);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.dcomp-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
+.dcomp-url{font-size:12px;color:var(--muted);margin-top:2px;}
+.dbadge{display:flex;align-items:center;gap:6px;font-size:11px;padding:4px 12px;border-radius:100px;}
+.dbadge.chg{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
+.dbadge.ok{background:rgba(184,245,74,.1);color:var(--accent);border:1px solid rgba(184,245,74,.2);}
+.dchange{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);margin-bottom:8px;}
+.dchg-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px;}
+.dchg-tag.price{background:rgba(248,113,113,.14);color:#f87171;}
+.dchg-tag.product{background:rgba(184,245,74,.14);color:var(--accent);}
+.dchg-tag.content{background:rgba(147,197,253,.14);color:#93c5fd;}
+.dchg-txt{font-size:13px;margin-bottom:4px;}
+.dchg-ai{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;}
+.dchg-time{font-size:11px;color:var(--muted);white-space:nowrap;margin-left:auto;}
+
+@media(max-width:768px){
+  nav,.hero{padding-left:24px;padding-right:24px;}
+  section{padding:80px 24px;}
+  .about,.process-head{flex-direction:column;grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr 1fr;}
+  .numbers,.pcards{grid-template-columns:1fr;}
+  .hero-bot{flex-direction:column;align-items:flex-start;gap:40px;}
+  .dash-layout{grid-template-columns:1fr;}
+  .dsidebar{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curring"></div>
+
+<!-- ══════════ LANDING ══════════ -->
+<div id="landing">
+
+<nav>
+  <div class="logo">Sensiva</div>
+  <div class="nav-r">
+    <a class="nav-a" href="#process">How it works</a>
+    <a class="nav-a" href="#pricing">Pricing</a>
+    <button class="nav-btn" onclick="showDash()">Start free →</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-bgtxt">SENSIVA</div>
+
+  <div class="hero-tag"><span class="hero-tag-dot"></span> AI Competitor Intelligence</div>
+  <h1 class="hero-h1">Know every<br>move your rivals<br>make. <i>Before<br>it's too late.</i></h1>
+  <div class="hero-bot">
+    <p class="hero-desc">Sensiva watches your competitors 24/7 — every price change, every new product, every update — and tells you exactly what it means for your business.</p>
+    <div class="hero-ctas">
+      <button class="btn-main" onclick="showDash()">Get started free <span>→</span></button>
+      <div class="scroll-ind"><div class="scroll-line"></div> Scroll to explore</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-dot"></span> Price changes detected</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> New products tracked</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> AI-powered insights</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Real-time alerts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Any website, anywhere</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Action recommendations</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Job listing signals</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Content strategy shifts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Price changes detected</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> New products tracked</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> AI-powered insights</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Real-time alerts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Any website, anywhere</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Action recommendations</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Job listing signals</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Content strategy shifts</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section>
+  <div class="about">
+    <div class="about-l">
+      <div class="sec-label rev">What we do</div>
+      <h2 class="rev d1">Stop guessing.<br>Start knowing.</h2>
+      <p class="rev d2">Most businesses find out about competitor moves too late — when customers are already leaving. Sensiva watches every page, every hour. The moment something changes, you know — and you know exactly what to do about it.</p>
+      <button class="btn-main rev d3" onclick="showDash()" style="display:inline-flex">See it live →</button>
+    </div>
+    <div class="about-r">
+      <div class="mock">
+        <div class="mock-top"><span class="mock-tag tag-price">Price change</span><span class="mock-time">2 min ago</span></div>
+        <div class="mock-t">Acme Corp dropped Pro plan $49 → $39/mo</div>
+        <div class="mock-ai">💡 They're competing on price aggressively. Highlight your value-adds instead of matching the cut.</div>
+      </div>
+      <div class="mock">
+        <div class="mock-top"><span class="mock-tag tag-prod">New product</span><span class="mock-time">1h ago</span></div>
+        <div class="mock-t">Rival Co launched "Team Collaboration" feature</div>
+        <div class="mock-ai">💡 Moving upmarket to enterprise. Review your own enterprise positioning now.</div>
+      </div>
+      <div class="mock">
+        <div class="mock-top"><span class="mock-tag tag-content">Job listings</span><span class="mock-time">3h ago</span></div>
+        <div class="mock-t">Competitor X added 8 new engineering roles</div>
+        <div class="mock-ai">💡 Major hiring signal. A large product push is likely in the next 3–6 months.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section style="padding:0;border-top:1px solid var(--border);">
+  <div class="numbers">
+    <div class="num-card rev"><div class="num-val">24/7</div><div class="num-label">Always watching</div></div>
+    <div class="num-card rev d1"><div class="num-val">< 1h</div><div class="num-label">Average detection time</div></div>
+    <div class="num-card rev d2"><div class="num-val">∞</div><div class="num-label">Websites we can track</div></div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="process-head">
+    <h2 class="rev">Simple.<br>Powerful.<br>Automatic.</h2>
+    <p class="rev d1">Set it up once. We handle scanning, analyzing, and alerting — you just act on the intelligence.</p>
+  </div>
+  <div class="steps">
+    <div class="step rev">
+      <div class="step-n">01</div>
+      <div class="step-ico">🎯</div>
+      <div class="step-t">Add competitors</div>
+      <p class="step-d">Paste any URL. No integrations, no permissions, no setup complexity.</p>
+    </div>
+    <div class="step rev d1">
+      <div class="step-n">02</div>
+      <div class="step-ico">👁️</div>
+      <div class="step-t">We watch 24/7</div>
+      <p class="step-d">Every page, every hour. Prices, products, content, job listings — nothing slips through.</p>
+    </div>
+    <div class="step rev d2">
+      <div class="step-n">03</div>
+      <div class="step-ico">🧠</div>
+      <div class="step-t">AI analyzes</div>
+      <p class="step-d">We don't just detect changes — our AI tells you what each change means strategically.</p>
+    </div>
+    <div class="step rev d3">
+      <div class="step-n">04</div>
+      <div class="step-ico">⚡</div>
+      <div class="step-t">You act first</div>
+      <p class="step-d">Get instant alerts with clear recommendations. React before anyone else even notices.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="pricing-head rev">
+    <h2>Honest pricing.</h2>
+    <p>Start free. Upgrade when you're ready. No surprises.</p>
+  </div>
+  <div class="pcards">
+    <div class="pcard rev">
+      <div class="pcard-name">Free</div>
+      <div class="pcard-price"><sup>$</sup>0</div>
+      <div class="pcard-per">forever free</div>
+      <ul class="pcard-feats">
+        <li>3 competitors</li>
+        <li>Daily scans</li>
+        <li>Email alerts</li>
+        <li>7-day history</li>
+      </ul>
+      <button class="pcard-btn pcard-btn-g" onclick="showDash()">Get started</button>
+    </div>
+    <div class="pcard featured rev d1">
+      <div class="pcard-badge">MOST POPULAR</div>
+      <div class="pcard-name">Pro</div>
+      <div class="pcard-price"><sup>$</sup>29</div>
+      <div class="pcard-per">per month</div>
+      <ul class="pcard-feats">
+        <li>20 competitors</li>
+        <li>Hourly scans</li>
+        <li>Email + Slack alerts</li>
+        <li>AI analysis & insights</li>
+        <li>90-day history</li>
+      </ul>
+      <button class="pcard-btn pcard-btn-p" onclick="showDash()">Start free trial</button>
+    </div>
+    <div class="pcard rev d2">
+      <div class="pcard-name">Agency</div>
+      <div class="pcard-price"><sup>$</sup>79</div>
+      <div class="pcard-per">per month</div>
+      <ul class="pcard-feats">
+        <li>Unlimited competitors</li>
+        <li>Real-time scans</li>
+        <li>All integrations</li>
+        <li>Advanced AI insights</li>
+        <li>Unlimited history</li>
+        <li>Team access</li>
+      </ul>
+      <button class="pcard-btn pcard-btn-g" onclick="showDash()">Contact us</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-bot">
+  <h2 class="rev">Ready to always<br>be one step<br><i>ahead?</i></h2>
+  <button class="btn-main rev d1" onclick="showDash()" style="font-size:17px;padding:22px 52px;display:inline-flex">Start for free →</button>
+</section>
+
+<footer>
+  <div class="foot-logo">Sensiva</div>
+  <div class="foot-copy">© 2026 Sensiva. All rights reserved.</div>
+</footer>
+
+</div><!-- end landing -->
+
+<!-- ══════════ DASHBOARD ══════════ -->
+<div id="dash">
+  <nav class="dash-nav">
+    <div class="logo">Sensiva</div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <span style="font-size:12px;color:var(--muted);">Free — 1/3 used</span>
+      <button class="dadd-btn" style="font-size:12px;padding:8px 18px;">Upgrade →</button>
+      <button class="dadd-btn" style="background:var(--surface);color:var(--fg);border:1px solid var(--border);" onclick="showLanding()">← Home</button>
+    </div>
+  </nav>
+
+  <div class="dash-layout">
+    <aside class="dsidebar">
+      <div class="dsidebar-item act" onclick="setTab(this,'comp')">🏢 Competitors</div>
+      <div class="dsidebar-item" onclick="setTab(this,'changes')">⚡ All Changes</div>
+      <div class="dsidebar-item" onclick="setTab(this,'alerts')">🔔 Alerts</div>
+      <div class="dsidebar-item" style="margin-top:16px;">⚙️ Settings</div>
+      <div class="dsidebar-item">💳 Billing</div>
+    </aside>
+
+    <main class="dmain">
+
+      <!-- COMPETITORS TAB -->
+      <div id="tab-comp">
+        <div class="dtitle">Competitors</div>
+        <div class="dstats">
+          <div class="dstat"><div class="dstat-l">Tracking</div><div class="dstat-v g" id="s-tot">1</div></div>
+          <div class="dstat"><div class="dstat-l">Changes today</div><div class="dstat-v y">3</div></div>
+          <div class="dstat"><div class="dstat-l">Last scan</div><div class="dstat-v" style="font-size:20px;margin-top:8px">2m ago</div></div>
+          <div class="dstat"><div class="dstat-l">Alerts sent</div><div class="dstat-v g">2</div></div>
+        </div>
+        <div class="dadd">
+          <div class="dadd-t">Track a new competitor</div>
+          <div class="drow">
+            <input class="dinput" id="in-url" placeholder="https://competitor.com" type="url">
+            <input class="dinput" id="in-name" placeholder="Name (optional)" style="max-width:200px">
+            <button class="dadd-btn" onclick="addComp()">Track →</button>
+          </div>
+        </div>
+        <div id="comp-list"></div>
+      </div>
+
+      <!-- CHANGES TAB -->
+      <div id="tab-changes" style="display:none">
+        <div class="dtitle">All Changes</div>
+        <div id="all-chg"></div>
+      </div>
+
+      <!-- ALERTS TAB -->
+      <div id="tab-alerts" style="display:none">
+        <div class="dtitle">Alert Settings</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:480px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:18px">Email notifications</div>
+          <input class="dinput" placeholder="your@email.com" style="width:100%;margin-bottom:14px">
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> Price changes</label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> New products / features</label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> Content updates</label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> Job listing changes</label>
+          </div>
+          <button class="dadd-btn">Save settings</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+// ── CURSOR ──
+var cx=0,cy=0,rx=0,ry=0;
+var cur=document.getElementById('cur'),ring=document.getElementById('curring');
+document.addEventListener('mousemove',function(e){cx=e.clientX;cy=e.clientY;cur.style.left=cx+'px';cur.style.top=cy+'px';});
+(function anim(){rx+=(cx-rx)*.5;ry+=(cy-ry)*.5;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+
+// ── SCROLL REVEAL ──
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:.08});
+document.querySelectorAll('.rev,.mock').forEach(function(el){obs.observe(el);});
+
+// ── NAV ──
+function showDash(){
+  document.getElementById('landing').style.display='none';
+  document.getElementById('dash').style.display='block';
+  document.body.style.cursor='default';
+  cur.style.display='none';ring.style.display='none';
+  renderComps();
+}
+function showLanding(){
+  document.getElementById('landing').style.display='block';
+  document.getElementById('dash').style.display='none';
+  document.body.style.cursor='none';
+  cur.style.display='block';ring.style.display='block';
+}
+
+// ── TABS ──
+function setTab(el,tab){
+  document.querySelectorAll('.dsidebar-item').forEach(function(i){i.classList.remove('act');});
+  el.classList.add('act');
+  document.querySelectorAll('[id^="tab-"]').forEach(function(t){t.style.display='none';});
+  document.getElementById('tab-'+tab).style.display='block';
+  if(tab==='changes')renderAllChg();
+}
+
+// ── DATA ──
+var comps=[{
+  id:1,name:'Example Corp',url:'https://example.com',emoji:'🏢',status:'changes',
+  changes:[
+    {type:'price',text:'Pro plan dropped $49 → $39/mo',ai:'💡 Competing on price. Highlight your value, don\'t just match their cut.',time:'1h ago'},
+    {type:'product',text:'"Team Collaboration" feature launched',ai:'💡 Moving upmarket. Review your enterprise positioning.',time:'3h ago'},
+    {type:'content',text:'Homepage headline changed to "10x your output"',ai:'💡 Shifting to ROI messaging — likely targeting larger companies.',time:'6h ago'}
+  ]
+}];
+
+function addComp(){
+  var url=document.getElementById('in-url').value;
+  var name=document.getElementById('in-name').value;
+  if(!url)return;
+  if(comps.length>=3){alert('Free plan: 3 competitors max. Upgrade to Pro for more.');return;}
+  var domain=url.replace(/https?:\/\//,'').split('/')[0];
+  comps.push({id:Date.now(),name:name||domain,url:url,emoji:'🌐',status:'ok',changes:[]});
+  document.getElementById('in-url').value='';
+  document.getElementById('in-name').value='';
+  document.getElementById('s-tot').textContent=comps.length;
+  renderComps();
+}
+
+function renderComps(){
+  var el=document.getElementById('comp-list');
+  el.innerHTML=comps.map(function(c){
+    var badge=c.status==='changes'
+      ?'<span class="dbadge chg">● '+c.changes.length+' changes</span>'
+      :'<span class="dbadge ok">● No changes</span>';
+    var chgs=c.changes.length>0
+      ?c.changes.map(function(ch){
+        return '<div class="dchange"><span class="dchg-tag '+ch.type+'">'+ch.type+'</span><div style="flex:1"><div class="dchg-txt">'+ch.text+'</div><div class="dchg-ai">'+ch.ai+'</div></div><div class="dchg-time">'+ch.time+'</div></div>';
+      }).join('')
+      :'<div style="padding:14px;text-align:center;color:var(--muted);font-size:13px">No changes yet — watching 👁️</div>';
+    return '<div class="dcomp"><div class="dcomp-h"><div class="dcomp-info"><div class="dcomp-av">'+c.emoji+'</div><div><div class="dcomp-name">'+c.name+'</div><div class="dcomp-url">'+c.url+'</div></div></div>'+badge+'</div>'+chgs+'</div>';
+  }).join('');
+}
+
+function renderAllChg(){
+  var all=[];
+  comps.forEach(function(c){c.changes.forEach(function(ch){all.push(Object.assign({},ch,{comp:c.name}));});});
+  var el=document.getElementById('all-chg');
+  el.innerHTML=all.length===0
+    ?'<div style="text-align:center;padding:60px;color:var(--muted)">No changes detected yet</div>'
+    :all.map(function(ch){
+      return '<div class="dchange" style="margin-bottom:10px"><span class="dchg-tag '+ch.type+'">'+ch.type+'</span><div style="flex:1"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">'+ch.comp+'</div><div class="dchg-txt">'+ch.text+'</div><div class="dchg-ai">'+ch.ai+'</div></div><div class="dchg-time">'+ch.time+'</div></div>';
+    }).join('');
+}
+
+renderComps();
+</script>
+</body>
+</html>
