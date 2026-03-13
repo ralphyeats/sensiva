@@ -162,7 +162,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 
 /* FLOATING CARDS ANIMATION */
 @keyframes floatup{0%{opacity:0;transform:translateY(16px);}10%{opacity:1;transform:translateY(0);}80%{opacity:1;transform:translateY(-50px);}100%{opacity:0;transform:translateY(-66px);}}
-.float-stack{position:absolute;right:56px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;pointer-events:none;}
+.float-stack{position:absolute;right:56px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;pointer-events:none;max-height:calc(100% - 120px);overflow:hidden;}
 .float-card{background:rgba(15,15,20,.9);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:12px;backdrop-filter:blur(12px);animation:floatup 5s ease-in-out infinite;white-space:nowrap;min-width:260px;}
 .float-card:nth-child(1){animation-delay:0s;}
 .float-card:nth-child(2){animation-delay:1s;}
@@ -229,15 +229,99 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 @keyframes pulse{0%{transform:scale(1);opacity:.8;}100%{transform:scale(2.5);opacity:0;}}
 
 @media(max-width:768px){
-  nav,.hero{padding-left:24px;padding-right:24px;}
-  section{padding:80px 24px;}
-  .about,.process-head{flex-direction:column;grid-template-columns:1fr;}
-  .steps{grid-template-columns:1fr 1fr;}
-  .numbers,.pcards,.segments{grid-template-columns:1fr;}
-  .hero-bot{flex-direction:column;align-items:flex-start;gap:40px;}
+  /* CURSOR - hide on mobile */
+  .cur,.cur-ring{display:none !important;}
+  body{cursor:default !important;}
+
+  /* NAV */
+  nav{padding:18px 20px;mix-blend-mode:normal;background:rgba(8,8,10,.95);backdrop-filter:blur(20px);}
+  .nav-r{gap:10px;}
+  .nav-a{display:none;}
+  .nav-btn{padding:8px 14px;font-size:12px;}
+  .lang-btn{padding:5px 8px;font-size:11px;}
+  #cur-lang{display:none;}
+
+  /* HERO */
+  .hero{padding:100px 20px 48px;min-height:100svh;}
+  .hero-h1{font-size:clamp(44px,12vw,72px);letter-spacing:-3px;margin-bottom:36px;}
+  .hero-bgtxt{font-size:clamp(80px,28vw,160px);}
+  .hero-bot{flex-direction:column;align-items:flex-start;gap:32px;}
+  .hero-desc{font-size:14px;max-width:100%;}
+  .hero-ctas{align-items:flex-start;width:100%;}
+  .btn-main{width:100%;justify-content:center;font-size:14px;padding:16px 24px;}
+
+  /* FLOAT CARDS - hide on mobile, too cluttered */
+  .float-stack{display:none;}
+  .hero-orb{width:300px;height:300px;}
+
+  /* TICKER */
+  .ticker{padding:12px 0;}
+  .ticker-item{font-size:10px;gap:10px;}
+
+  /* SECTIONS */
+  section{padding:64px 20px;}
+
+  /* SEGMENTS */
+  .segments{grid-template-columns:1fr;gap:14px;margin-top:32px;}
+  .seg-card{padding:24px;}
+
+  /* ABOUT */
+  .about{grid-template-columns:1fr;gap:40px;}
+  .about-l h2{font-size:clamp(36px,9vw,56px);letter-spacing:-2px;}
+  .about-r{gap:10px;}
+  .mock{padding:16px;}
+
+  /* NUMBERS */
+  .numbers{grid-template-columns:1fr;gap:1px;}
+  .num-card{padding:40px 24px;}
+  .num-val{font-size:clamp(56px,14vw,80px);}
+
+  /* PROCESS */
+  .process-head{flex-direction:column;gap:20px;margin-bottom:40px;}
+  .process-head h2{font-size:clamp(36px,9vw,56px);letter-spacing:-2px;}
+  .steps{grid-template-columns:1fr;border-radius:16px;}
+  .step{border-right:none;border-bottom:1px solid var(--border);padding:32px 24px;}
+  .step:last-child{border-bottom:none;}
+  .step-n{font-size:56px;margin-bottom:20px;}
+
+  /* PRICING */
+  .pcards{grid-template-columns:1fr;max-width:100%;}
+  .pcard{padding:28px;}
+  .pcard-price{font-size:52px;}
+  .pricing-head h2{font-size:clamp(40px,10vw,64px);letter-spacing:-3px;}
+
+  /* CTA */
+  .cta-bot{padding:64px 20px !important;}
+  .cta-bot h2{font-size:clamp(44px,11vw,72px);letter-spacing:-3px;}
+  .cta-bot .btn-main{font-size:15px !important;padding:18px 32px !important;width:100%;justify-content:center;}
+
+  /* FOOTER */
+  footer{padding:24px 20px;flex-direction:column;gap:12px;text-align:center;}
+
+  /* DASHBOARD */
   .dash-layout{grid-template-columns:1fr;}
   .dsidebar{display:none;}
-  .dstats{grid-template-columns:1fr 1fr;}
+  .dmain{padding:20px 16px;}
+  .dtitle{font-size:20px;margin-bottom:20px;}
+  .dstats{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+  .dstat{padding:14px 16px;}
+  .dstat-v{font-size:28px;}
+  .drow{flex-direction:column;}
+  .dinput{font-size:16px;}/* prevent zoom on iOS */
+  .dadd-btn{width:100%;text-align:center;}
+  .dcomp{padding:18px 16px;}
+  .dchange{flex-wrap:wrap;gap:8px;}
+  .dchg-time{margin-left:0;}
+  .dash-nav{padding:14px 16px;}
+  .dash-nav .logo{font-size:15px;}
+
+  /* MOBILE BOTTOM NAV */
+  .mobile-nav{display:flex !important;}
+}
+
+@media(max-width:480px){
+  .hero-h1{font-size:clamp(38px,11vw,56px);letter-spacing:-2px;}
+  .dstats{grid-template-columns:1fr;}
 }
 
 /* LANGUAGE SELECTOR */
@@ -246,10 +330,16 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 .lang-btn:hover{color:var(--fg);border-color:rgba(238,238,232,.3);}
 .lang-flag{font-size:14px;}
 .lang-drop{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:6px;min-width:140px;display:none;z-index:300;box-shadow:0 20px 40px rgba(0,0,0,.4);}
-.lang-sel:hover .lang-drop{display:block;}
+.lang-drop.open{display:block !important;}
 .lang-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;}
 .lang-opt:hover{background:rgba(184,245,74,.07);color:var(--fg);}
 .lang-opt.active{color:var(--accent);}
+
+/* MOBILE BOTTOM NAV */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(8,8,10,.96);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));justify-content:space-around;}
+.mob-nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--muted);padding:6px 16px;border-radius:8px;cursor:pointer;transition:color .2s;min-width:60px;}
+.mob-nav-item.act{color:var(--accent);}
+.mob-nav-icon{font-size:18px;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -267,7 +357,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
     <a class="nav-a" href="#segments">Who it's for</a>
     <a class="nav-a" href="#process">How it works</a>
     <a class="nav-a" href="#pricing">Pricing</a>
-    <div class="lang-sel"><button class="lang-btn"><span class="lang-flag" id="cur-flag">🇺🇸</span><span id="cur-lang">EN</span> ▾</button><div class="lang-drop"><div class="lang-opt active" onclick="setLang('en')">🇺🇸 English</div><div class="lang-opt" onclick="setLang('fr')">🇫🇷 Français</div><div class="lang-opt" onclick="setLang('tr')">🇹🇷 Türkçe</div><div class="lang-opt" onclick="setLang('ru')">🇷🇺 Русский</div></div></div><button class="nav-btn" style="background:transparent;color:var(--fg);border:1px solid rgba(238,238,232,.2);margin-right:-32px;" id="nav-login-btn" onclick="openAuthModal('login')">Log in</button>
+    <div class="lang-sel" id="lang-sel"><button class="lang-btn" onclick="toggleLangDrop(event)"><span class="lang-flag" id="cur-flag">🇺🇸</span><span id="cur-lang">EN</span> ▾</button><div class="lang-drop"><div class="lang-opt active" onclick="setLang('en')">🇺🇸 English</div><div class="lang-opt" onclick="setLang('fr')">🇫🇷 Français</div><div class="lang-opt" onclick="setLang('tr')">🇹🇷 Türkçe</div><div class="lang-opt" onclick="setLang('ru')">🇷🇺 Русский</div></div></div><button class="nav-btn" style="background:transparent;color:var(--fg);border:1px solid rgba(238,238,232,.2);margin-right:-32px;" id="nav-login-btn" onclick="openAuthModal('login')">Log in</button>
     <button class="nav-btn" onclick="showDash()">Start free →</button>
   </div>
 </nav>
@@ -591,6 +681,14 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       </div>
     </main>
   </div>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <div class="mob-nav-item act" id="mob-comp" onclick="mobTab('comp')"><span class="mob-nav-icon">🏢</span><span>Competitors</span></div>
+    <div class="mob-nav-item" id="mob-changes" onclick="mobTab('changes')"><span class="mob-nav-icon">⚡</span><span>Changes</span></div>
+    <div class="mob-nav-item" id="mob-alerts" onclick="mobTab('alerts')"><span class="mob-nav-icon">🔔</span><span>Alerts</span></div>
+    <div class="mob-nav-item" id="mob-settings" onclick="mobTab('settings')"><span class="mob-nav-icon">⚙️</span><span>Settings</span></div>
+  </nav>
 </div>
 
 <script>
@@ -620,6 +718,20 @@ function timeAgo(dateStr){
   if(diff<86400)return Math.floor(diff/3600)+'h ago';
   return Math.floor(diff/86400)+'d ago';
 }
+
+// Mobile tab switching
+function mobTab(tab) {
+  setTab(document.querySelector('.dsidebar-item'), tab);
+  document.querySelectorAll('.mob-nav-item').forEach(function(i){i.classList.remove('act');});
+  var el = document.getElementById('mob-'+tab);
+  if(el) el.classList.add('act');
+  // Update tab content
+  document.querySelectorAll('[id^="tab-"]').forEach(function(t){t.style.display='none';});
+  var tabEl = document.getElementById('tab-'+tab);
+  if(tabEl) tabEl.style.display='block';
+  if(tab==='changes') loadAllChanges();
+}
+
 function escHtml(s){
   if(!s)return '';
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -688,6 +800,7 @@ function showDash(){
   document.getElementById('dash').style.display='block';
   document.body.style.cursor='default';
   cur.style.display='none';ring.style.display='none';
+  var mbn=document.getElementById('mobile-nav');if(mbn)mbn.style.display='';
   var el=document.getElementById('settings-email');
   if(el)el.textContent=currentUser.email;
   loadComps();
@@ -934,11 +1047,23 @@ var LANGS = {
 };
 
 var curLang = 'en';
+
+function toggleLangDrop(e) {
+  e.stopPropagation();
+  var drop = document.querySelector('.lang-drop');
+  drop.classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  var drop = document.querySelector('.lang-drop');
+  if(drop) drop.classList.remove('open');
+});
+
 var FLAGS = {en:'🇺🇸',fr:'🇫🇷',tr:'🇹🇷',ru:'🇷🇺'};
 var LANGNAMES = {en:'EN',fr:'FR',tr:'TR',ru:'RU'};
 
 function setLang(lang) {
   curLang = lang;
+  var drop = document.querySelector('.lang-drop'); if(drop) drop.classList.remove('open');
   var t = LANGS[lang];
   document.getElementById('cur-flag').textContent = FLAGS[lang];
   document.getElementById('cur-lang').textContent = LANGNAMES[lang];
