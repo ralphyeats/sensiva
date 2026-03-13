@@ -14,18 +14,15 @@
   --muted:#52525e;
   --border:#18181f;
   --surface:#0f0f14;
-  
 }
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--fg);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
 
-/* CURSOR */
 .cur{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
 .cur-ring{position:fixed;width:40px;height:40px;border:1px solid rgba(184,245,74,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s;}
 body:has(a:hover) .cur, body:has(button:hover) .cur{width:16px;height:16px;}
 body:has(a:hover) .cur-ring, body:has(button:hover) .cur-ring{width:56px;height:56px;border-color:rgba(184,245,74,.6);}
 
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 56px;mix-blend-mode:difference;}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:1px;color:var(--fg);text-transform:uppercase;}
 .nav-r{display:flex;align-items:center;gap:48px;}
@@ -34,54 +31,42 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .nav-btn{font-size:13px;font-weight:600;color:var(--bg);background:var(--fg);padding:10px 24px;border-radius:100px;border:none;cursor:none;font-family:'DM Sans',sans-serif;letter-spacing:.3px;transition:background .3s;}
 .nav-btn:hover{background:var(--accent);}
 
-/* HERO */
 .hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 56px 72px;overflow:hidden;}
-
 .hero-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;}
-
 .hero-gradient{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 80%,rgba(184,245,74,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 20%,rgba(184,245,74,.04) 0%,transparent 50%);pointer-events:none;}
-
 .hero-bgtxt{position:absolute;bottom:-40px;left:-20px;font-family:'Syne',sans-serif;font-size:clamp(160px,22vw,320px);font-weight:800;color:transparent;-webkit-text-stroke:1px rgba(238,238,232,.03);letter-spacing:-12px;white-space:nowrap;user-select:none;pointer-events:none;line-height:1;}
-
 .hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:36px;opacity:0;animation:fadeup .8s .1s forwards;}
 .hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
-
 .hero-h1{font-family:'Instrument Serif',serif;font-size:clamp(60px,9vw,130px);line-height:.95;letter-spacing:-5px;max-width:1000px;margin-bottom:56px;opacity:0;animation:fadeup .9s .25s forwards;}
 .hero-h1 i{font-style:italic;color:var(--accent);}
-
 .hero-bot{display:flex;align-items:flex-end;justify-content:space-between;opacity:0;animation:fadeup .8s .45s forwards;}
 .hero-desc{font-size:16px;color:var(--muted);max-width:420px;line-height:1.85;font-weight:300;}
 .hero-ctas{display:flex;flex-direction:column;align-items:flex-end;gap:20px;}
 .btn-main{display:inline-flex;align-items:center;gap:12px;padding:18px 36px;background:var(--accent);color:var(--bg);border-radius:100px;border:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:none;letter-spacing:.2px;transition:all .3s;}
 .btn-main:hover{background:var(--fg);transform:scale(1.03);}
-.btn-ghost{display:inline-flex;align-items:center;gap:8px;padding:18px 36px;background:transparent;color:var(--muted);border-radius:100px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:15px;cursor:none;transition:all .3s;}
+.btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:18px 36px;background:transparent;color:var(--muted);border-radius:100px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:15px;cursor:none;transition:all .3s;}
 .btn-ghost:hover{color:var(--fg);border-color:rgba(238,238,232,.3);}
-
 .scroll-ind{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
 .scroll-line{width:48px;height:1px;background:var(--border);position:relative;overflow:hidden;}
 .scroll-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--accent);animation:slidein 2s ease-in-out infinite;}
 @keyframes slidein{to{left:100%;}}
 @keyframes fadeup{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
 
-/* TICKER */
 .ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;background:var(--surface);overflow:hidden;}
 .ticker-track{display:flex;gap:56px;width:max-content;animation:tick 25s linear infinite;}
 .ticker-item{display:flex;align-items:center;gap:14px;white-space:nowrap;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-/* SECTIONS */
 section{padding:120px 56px;border-top:1px solid var(--border);}
 
-/* ABOUT */
 .about{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
 .about-l .sec-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;}
 .about-l h2{font-family:'Instrument Serif',serif;font-size:clamp(40px,5vw,68px);line-height:1.05;letter-spacing:-3px;margin-bottom:32px;}
 .about-l p{font-size:15px;color:var(--muted);line-height:1.95;font-weight:300;margin-bottom:40px;}
 .about-r{display:flex;flex-direction:column;gap:14px;}
 
-/* MOCK CARDS */
 .mock{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px;transform:translateX(60px);opacity:0;transition:all .9s cubic-bezier(.16,1,.3,1);}
 .mock.vis{transform:translateX(0);opacity:1;}
 .mock:nth-child(2){transition-delay:.12s;}
@@ -95,7 +80,6 @@ section{padding:120px 56px;border-top:1px solid var(--border);}
 .mock-ai{font-size:12px;color:var(--muted);font-style:italic;line-height:1.65;}
 .mock-time{font-size:11px;color:var(--muted);}
 
-/* PROCESS */
 .process-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:80px;}
 .process-head h2{font-family:'Instrument Serif',serif;font-size:clamp(44px,6vw,80px);line-height:1.0;letter-spacing:-4px;max-width:560px;}
 .process-head p{font-size:14px;color:var(--muted);max-width:260px;line-height:1.9;}
@@ -104,17 +88,14 @@ section{padding:120px 56px;border-top:1px solid var(--border);}
 .step:last-child{border-right:none;}
 .step:hover{background:var(--surface);}
 .step-n{font-family:'Syne',sans-serif;font-size:80px;font-weight:800;line-height:1;color:rgba(238,238,232,.04);letter-spacing:-4px;margin-bottom:32px;}
-.step-ico{display:none;}
 .step-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:10px;letter-spacing:-.5px;}
 .step-d{font-size:13px;color:var(--muted);line-height:1.8;}
 
-/* NUMBERS */
 .numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
 .num-card{background:var(--bg);padding:64px 56px;text-align:center;}
 .num-val{font-family:'Instrument Serif',serif;font-size:clamp(60px,8vw,100px);line-height:1;letter-spacing:-4px;color:var(--accent);margin-bottom:12px;}
 .num-label{font-size:13px;color:var(--muted);letter-spacing:1px;}
 
-/* PRICING */
 .pricing-head{text-align:center;margin-bottom:80px;}
 .pricing-head h2{font-family:'Instrument Serif',serif;font-size:clamp(48px,7vw,88px);line-height:1.0;letter-spacing:-4px;margin-bottom:16px;}
 .pricing-head p{font-size:15px;color:var(--muted);font-weight:300;}
@@ -136,17 +117,14 @@ section{padding:120px 56px;border-top:1px solid var(--border);}
 .pcard-btn-g{background:transparent;color:var(--fg);border:1px solid var(--border);}
 .pcard-btn-g:hover{border-color:var(--fg);}
 
-/* CTA BOTTOM */
 .cta-bot{text-align:center;background:var(--surface);}
 .cta-bot h2{font-family:'Instrument Serif',serif;font-size:clamp(52px,8vw,108px);line-height:.95;letter-spacing:-5px;margin-bottom:48px;}
 .cta-bot h2 i{font-style:italic;color:var(--accent);}
 
-/* FOOTER */
 footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-items:center;justify-content:space-between;}
 .foot-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:1px;text-transform:uppercase;}
 .foot-copy{font-size:12px;color:var(--muted);}
 
-/* REVEAL */
 .rev{opacity:0;transform:translateY(48px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
 .rev.vis{opacity:1;transform:translateY(0);}
 .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
@@ -177,22 +155,29 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 .dadd-btn:hover{background:var(--fg);}
 .dcomp{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:14px;transition:border-color .3s;}
 .dcomp:hover{border-color:rgba(184,245,74,.25);}
-.dcomp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.dcomp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .dcomp-info{display:flex;align-items:center;gap:14px;}
-.dcomp-av{width:42px;height:42px;border-radius:10px;background:rgba(184,245,74,.09);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.dcomp-av{width:42px;height:42px;border-radius:10px;background:rgba(184,245,74,.09);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;}
 .dcomp-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
 .dcomp-url{font-size:12px;color:var(--muted);margin-top:2px;}
 .dbadge{display:flex;align-items:center;gap:6px;font-size:11px;padding:4px 12px;border-radius:100px;}
-.dbadge.chg{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2);}
 .dbadge.ok{background:rgba(184,245,74,.1);color:var(--accent);border:1px solid rgba(184,245,74,.2);}
 .dchange{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);margin-bottom:8px;}
 .dchg-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px;}
 .dchg-tag.price{background:rgba(248,113,113,.14);color:#f87171;}
 .dchg-tag.product{background:rgba(184,245,74,.14);color:var(--accent);}
 .dchg-tag.content{background:rgba(147,197,253,.14);color:#93c5fd;}
-.dchg-txt{font-size:13px;margin-bottom:4px;}
+.dchg-tag.hiring{background:rgba(251,191,36,.14);color:#fbbf24;}
+.dchg-tag.other{background:rgba(168,85,247,.14);color:#a855f7;}
+.dchg-txt{font-size:13px;margin-bottom:4px;line-height:1.5;}
 .dchg-ai{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;}
 .dchg-time{font-size:11px;color:var(--muted);white-space:nowrap;margin-left:auto;}
+.empty-state{padding:60px;text-align:center;color:var(--muted);font-size:14px;line-height:2;}
+.loading{padding:40px;text-align:center;color:var(--muted);font-size:13px;}
+.scan-btn{padding:8px 16px;background:transparent;color:var(--accent);border:1px solid rgba(184,245,74,.3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;}
+.scan-btn:hover{background:rgba(184,245,74,.1);}
+.del-btn{padding:6px 12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;}
+.del-btn:hover{color:#f87171;border-color:rgba(248,113,113,.3);}
 
 @media(max-width:768px){
   nav,.hero{padding-left:24px;padding-right:24px;}
@@ -203,6 +188,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   .hero-bot{flex-direction:column;align-items:flex-start;gap:40px;}
   .dash-layout{grid-template-columns:1fr;}
   .dsidebar{display:none;}
+  .dstats{grid-template-columns:1fr 1fr;}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -225,12 +211,10 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-noise"></div>
   <div class="hero-gradient"></div>
   <div class="hero-bgtxt">SENSIVA</div>
-
   <div class="hero-tag"><span class="hero-tag-dot"></span> AI Competitor Intelligence</div>
   <h1 class="hero-h1">Know every<br>move your rivals<br>make. <i>Before<br>it's too late.</i></h1>
   <div class="hero-bot">
@@ -242,7 +226,6 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </section>
 
-<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-track">
     <div class="ticker-item"><span class="ticker-dot"></span> Price changes detected</div>
@@ -264,7 +247,6 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </div>
 
-<!-- ABOUT -->
 <section>
   <div class="about">
     <div class="about-l">
@@ -293,7 +275,6 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </section>
 
-<!-- NUMBERS -->
 <section style="padding:0;border-top:1px solid var(--border);">
   <div class="numbers">
     <div class="num-card rev"><div class="num-val">24/7</div><div class="num-label">Always watching</div></div>
@@ -302,41 +283,19 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </section>
 
-<!-- PROCESS -->
 <section id="process">
   <div class="process-head">
     <h2 class="rev">Simple.<br>Powerful.<br>Automatic.</h2>
     <p class="rev d1">Set it up once. We handle scanning, analyzing, and alerting — you just act on the intelligence.</p>
   </div>
   <div class="steps">
-    <div class="step rev">
-      <div class="step-n">01</div>
-      <div class="step-ico">🎯</div>
-      <div class="step-t">Add competitors</div>
-      <p class="step-d">Paste any URL. No integrations, no permissions, no setup complexity.</p>
-    </div>
-    <div class="step rev d1">
-      <div class="step-n">02</div>
-      <div class="step-ico">👁️</div>
-      <div class="step-t">We watch 24/7</div>
-      <p class="step-d">Every page, every hour. Prices, products, content, job listings — nothing slips through.</p>
-    </div>
-    <div class="step rev d2">
-      <div class="step-n">03</div>
-      <div class="step-ico">🧠</div>
-      <div class="step-t">AI analyzes</div>
-      <p class="step-d">We don't just detect changes — our AI tells you what each change means strategically.</p>
-    </div>
-    <div class="step rev d3">
-      <div class="step-n">04</div>
-      <div class="step-ico">⚡</div>
-      <div class="step-t">You act first</div>
-      <p class="step-d">Get instant alerts with clear recommendations. React before anyone else even notices.</p>
-    </div>
+    <div class="step rev"><div class="step-n">01</div><div class="step-t">Add competitors</div><p class="step-d">Paste any URL. No integrations, no permissions, no setup complexity.</p></div>
+    <div class="step rev d1"><div class="step-n">02</div><div class="step-t">We watch 24/7</div><p class="step-d">Every page, every hour. Prices, products, content, job listings — nothing slips through.</p></div>
+    <div class="step rev d2"><div class="step-n">03</div><div class="step-t">AI analyzes</div><p class="step-d">We don't just detect changes — our AI tells you what each change means strategically.</p></div>
+    <div class="step rev d3"><div class="step-n">04</div><div class="step-t">You act first</div><p class="step-d">Get instant alerts with clear recommendations. React before anyone else even notices.</p></div>
   </div>
 </section>
 
-<!-- PRICING -->
 <section id="pricing">
   <div class="pricing-head rev">
     <h2>Honest pricing.</h2>
@@ -347,12 +306,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       <div class="pcard-name">Free</div>
       <div class="pcard-price"><sup>$</sup>0</div>
       <div class="pcard-per">forever free</div>
-      <ul class="pcard-feats">
-        <li>3 competitors</li>
-        <li>Daily scans</li>
-        <li>Email alerts</li>
-        <li>7-day history</li>
-      </ul>
+      <ul class="pcard-feats"><li>3 competitors</li><li>Daily scans</li><li>Email alerts</li><li>7-day history</li></ul>
       <button class="pcard-btn pcard-btn-g" onclick="showDash()">Get started</button>
     </div>
     <div class="pcard featured rev d1">
@@ -360,33 +314,19 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       <div class="pcard-name">Pro</div>
       <div class="pcard-price"><sup>$</sup>29</div>
       <div class="pcard-per">per month</div>
-      <ul class="pcard-feats">
-        <li>20 competitors</li>
-        <li>Hourly scans</li>
-        <li>Email + Slack alerts</li>
-        <li>AI analysis & insights</li>
-        <li>90-day history</li>
-      </ul>
+      <ul class="pcard-feats"><li>20 competitors</li><li>Hourly scans</li><li>Email + Slack alerts</li><li>AI analysis & insights</li><li>90-day history</li></ul>
       <button class="pcard-btn pcard-btn-p" onclick="showDash()">Start free trial</button>
     </div>
     <div class="pcard rev d2">
       <div class="pcard-name">Agency</div>
       <div class="pcard-price"><sup>$</sup>79</div>
       <div class="pcard-per">per month</div>
-      <ul class="pcard-feats">
-        <li>Unlimited competitors</li>
-        <li>Real-time scans</li>
-        <li>All integrations</li>
-        <li>Advanced AI insights</li>
-        <li>Unlimited history</li>
-        <li>Team access</li>
-      </ul>
+      <ul class="pcard-feats"><li>Unlimited competitors</li><li>Real-time scans</li><li>All integrations</li><li>Advanced AI insights</li><li>Unlimited history</li><li>Team access</li></ul>
       <button class="pcard-btn pcard-btn-g" onclick="showDash()">Contact us</button>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta-bot">
   <h2 class="rev">Ready to always<br>be one step<br><i>ahead?</i></h2>
   <button class="btn-main rev d1" onclick="showDash()" style="font-size:17px;padding:22px 52px;display:inline-flex">Start for free →</button>
@@ -404,7 +344,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   <nav class="dash-nav">
     <div class="logo">Sensiva</div>
     <div style="display:flex;align-items:center;gap:14px;">
-      <span style="font-size:12px;color:var(--muted);">Free — 1/3 used</span>
+      <span style="font-size:12px;color:var(--muted);" id="plan-badge">Free — 0/3 used</span>
       <button class="dadd-btn" style="font-size:12px;padding:8px 18px;">Upgrade →</button>
       <button class="dadd-btn" style="background:var(--surface);color:var(--fg);border:1px solid var(--border);" onclick="doLogout()">Log out</button>
     </div>
@@ -415,8 +355,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       <div class="dsidebar-item act" onclick="setTab(this,'comp')">🏢 Competitors</div>
       <div class="dsidebar-item" onclick="setTab(this,'changes')">⚡ All Changes</div>
       <div class="dsidebar-item" onclick="setTab(this,'alerts')">🔔 Alerts</div>
-      <div class="dsidebar-item" style="margin-top:16px;">⚙️ Settings</div>
-      <div class="dsidebar-item">💳 Billing</div>
+      <div class="dsidebar-item" style="margin-top:16px;" onclick="setTab(this,'settings')">⚙️ Settings</div>
     </aside>
 
     <main class="dmain">
@@ -425,10 +364,10 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       <div id="tab-comp">
         <div class="dtitle">Competitors</div>
         <div class="dstats">
-          <div class="dstat"><div class="dstat-l">Tracking</div><div class="dstat-v g" id="s-tot">1</div></div>
-          <div class="dstat"><div class="dstat-l">Changes today</div><div class="dstat-v y">3</div></div>
-          <div class="dstat"><div class="dstat-l">Last scan</div><div class="dstat-v" style="font-size:20px;margin-top:8px">2m ago</div></div>
-          <div class="dstat"><div class="dstat-l">Alerts sent</div><div class="dstat-v g">2</div></div>
+          <div class="dstat"><div class="dstat-l">Tracking</div><div class="dstat-v g" id="s-tot">0</div></div>
+          <div class="dstat"><div class="dstat-l">Changes (all time)</div><div class="dstat-v y" id="s-chg">0</div></div>
+          <div class="dstat"><div class="dstat-l">Last scan</div><div class="dstat-v" style="font-size:18px;margin-top:6px" id="s-last">—</div></div>
+          <div class="dstat"><div class="dstat-l">Scan frequency</div><div class="dstat-v" style="font-size:18px;margin-top:6px">Daily</div></div>
         </div>
         <div class="dadd">
           <div class="dadd-t">Track a new competitor</div>
@@ -438,13 +377,13 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
             <button class="dadd-btn" id="track-btn" onclick="addComp()">Track →</button>
           </div>
         </div>
-        <div id="comp-list"></div>
+        <div id="comp-list"><div class="loading">Loading competitors...</div></div>
       </div>
 
       <!-- CHANGES TAB -->
       <div id="tab-changes" style="display:none">
         <div class="dtitle">All Changes</div>
-        <div id="all-chg"></div>
+        <div id="all-chg"><div class="loading">Loading changes...</div></div>
       </div>
 
       <!-- ALERTS TAB -->
@@ -460,6 +399,18 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> Job listing changes</label>
           </div>
           <button class="dadd-btn">Save settings</button>
+        </div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div id="tab-settings" style="display:none">
+        <div class="dtitle">Settings</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:480px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">Account</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:24px" id="settings-email">—</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">Plan</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:24px">Free — 3 competitors, daily scans</div>
+          <button class="dadd-btn">Upgrade to Pro →</button>
         </div>
       </div>
 
@@ -485,6 +436,16 @@ var obs=new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});
 },{threshold:.08});
 document.querySelectorAll('.rev,.mock').forEach(function(el){obs.observe(el);});
+
+// ── HELPERS ──
+function timeAgo(dateStr){
+  if(!dateStr)return 'Never';
+  var diff=Math.floor((Date.now()-new Date(dateStr))/1000);
+  if(diff<60)return diff+'s ago';
+  if(diff<3600)return Math.floor(diff/60)+'m ago';
+  if(diff<86400)return Math.floor(diff/3600)+'h ago';
+  return Math.floor(diff/86400)+'d ago';
+}
 
 // ── AUTH ──
 async function doSignup(){
@@ -527,11 +488,8 @@ function openAuthModal(type){
 }
 function closeAuthModal(){document.getElementById('auth-modal').style.display='none';}
 
-// Check existing session
 sb.auth.getSession().then(function(res){
-  if(res.data.session){
-    currentUser=res.data.session.user;
-  }
+  if(res.data.session){currentUser=res.data.session.user;}
 });
 
 // ── NAV ──
@@ -541,8 +499,11 @@ function showDash(){
   document.getElementById('dash').style.display='block';
   document.body.style.cursor='default';
   cur.style.display='none';ring.style.display='none';
+  var el=document.getElementById('settings-email');
+  if(el)el.textContent=currentUser.email;
   loadComps();
 }
+
 function showLanding(){
   document.getElementById('landing').style.display='block';
   document.getElementById('dash').style.display='none';
@@ -556,61 +517,123 @@ function setTab(el,tab){
   el.classList.add('act');
   document.querySelectorAll('[id^="tab-"]').forEach(function(t){t.style.display='none';});
   document.getElementById('tab-'+tab).style.display='block';
-  if(tab==='changes')renderAllChg();
+  if(tab==='changes')loadAllChanges();
 }
 
-// ── DATA ──
-var comps=[{
-  id:1,name:'Example Corp',url:'https://example.com',emoji:'🏢',status:'changes',
-  changes:[
-    {type:'price',text:'Pro plan dropped $49 → $39/mo',ai:'💡 Competing on price. Highlight your value, don\'t just match their cut.',time:'1h ago'},
-    {type:'product',text:'"Team Collaboration" feature launched',ai:'💡 Moving upmarket. Review your enterprise positioning.',time:'3h ago'},
-    {type:'content',text:'Homepage headline changed to "10x your output"',ai:'💡 Shifting to ROI messaging — likely targeting larger companies.',time:'6h ago'}
-  ]
-}];
+// ── LOAD COMPETITORS FROM SUPABASE ──
+async function loadComps(){
+  var {data:comps,error}=await sb.from('competitors').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+  if(error){console.error(error);return;}
 
-function addComp(){
-  var url=document.getElementById('in-url').value;
-  var name=document.getElementById('in-name').value;
-  if(!url)return;
-  if(comps.length>=3){alert('Free plan: 3 competitors max. Upgrade to Pro for more.');return;}
-  var domain=url.replace(/https?:\/\//,'').split('/')[0];
-  comps.push({id:Date.now(),name:name||domain,url:url,emoji:'🌐',status:'ok',changes:[]});
-  document.getElementById('in-url').value='';
-  document.getElementById('in-name').value='';
-  document.getElementById('s-tot').textContent=comps.length;
-  renderComps();
+  // Update stats
+  document.getElementById('s-tot').textContent=comps?comps.length:0;
+  document.getElementById('plan-badge').textContent='Free — '+(comps?comps.length:0)+'/3 used';
+
+  // Last scan time
+  var lastScan=comps&&comps.length>0?comps.reduce(function(a,b){return new Date(a.last_scanned||0)>new Date(b.last_scanned||0)?a:b;},comps[0]):null;
+  document.getElementById('s-last').textContent=lastScan&&lastScan.last_scanned?timeAgo(lastScan.last_scanned):'Never';
+
+  // Load change counts
+  var {data:changes}=await sb.from('changes').select('id,competitor_id').eq('user_id',currentUser.id);
+  document.getElementById('s-chg').textContent=changes?changes.length:0;
+
+  // Build change count map
+  var chgMap={};
+  if(changes)changes.forEach(function(c){chgMap[c.competitor_id]=(chgMap[c.competitor_id]||0)+1;});
+
+  renderComps(comps||[],chgMap);
 }
 
-function renderComps(){
+// ── RENDER COMPETITORS ──
+function renderComps(comps,chgMap){
   var el=document.getElementById('comp-list');
   if(comps.length===0){
-    el.innerHTML='<div style="padding:60px;text-align:center;color:var(--muted);font-size:14px">No competitors yet — add one above 👆</div>';
+    el.innerHTML='<div class="empty-state">No competitors yet — add one above 👆<br><span style="font-size:12px">Your first scan will run automatically tonight at 9am</span></div>';
     return;
   }
   el.innerHTML=comps.map(function(c){
-    var initials=(c.name||'??').substring(0,2).toUpperCase();
-    return '<div class="dcomp"><div class="dcomp-h"><div class="dcomp-info"><div class="dcomp-av" style="font-family:Syne,sans-serif;font-size:14px;font-weight:700;">'+initials+'</div><div><div class="dcomp-name">'+c.name+'</div><div class="dcomp-url">'+c.url+'</div></div></div><span class="dbadge ok">● Watching</span></div><div style="padding:14px;text-align:center;color:var(--muted);font-size:13px">No changes yet — watching 👁️</div></div>';
+    var initials=(c.name||c.url||'??').replace(/https?:\/\//,'').substring(0,2).toUpperCase();
+    var chgCount=chgMap[c.id]||0;
+    var chgHtml=chgCount>0
+      ?'<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#fbbf24;margin-bottom:4px">⚡ '+chgCount+' change'+(chgCount>1?'s':'')+' detected</div>'
+      :'<div style="font-size:12px;color:var(--muted);margin-bottom:4px">👁️ Watching — no changes yet</div>';
+    return '<div class="dcomp"><div class="dcomp-h"><div class="dcomp-info"><div class="dcomp-av">'+initials+'</div><div><div class="dcomp-name">'+escHtml(c.name||c.url)+'</div><div class="dcomp-url">'+escHtml(c.url)+'</div></div></div><div style="display:flex;gap:8px;align-items:center"><span class="dbadge ok">● Watching</span><button class="del-btn" onclick="deleteComp(\''+c.id+'\')">Remove</button></div></div>'
+      +chgHtml
+      +'<div style="font-size:11px;color:var(--muted)">Last scanned: '+timeAgo(c.last_scanned)+'</div></div>';
   }).join('');
 }
 
-function renderAllChg(){
-  var all=[];
-  comps.forEach(function(c){c.changes.forEach(function(ch){all.push(Object.assign({},ch,{comp:c.name}));});});
-  var el=document.getElementById('all-chg');
-  el.innerHTML=all.length===0
-    ?'<div style="text-align:center;padding:60px;color:var(--muted)">No changes detected yet</div>'
-    :all.map(function(ch){
-      return '<div class="dchange" style="margin-bottom:10px"><span class="dchg-tag '+ch.type+'">'+ch.type+'</span><div style="flex:1"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">'+ch.comp+'</div><div class="dchg-txt">'+ch.text+'</div><div class="dchg-ai">'+ch.ai+'</div></div><div class="dchg-time">'+ch.time+'</div></div>';
-    }).join('');
+// ── ADD COMPETITOR ──
+async function addComp(){
+  var url=document.getElementById('in-url').value.trim();
+  var name=document.getElementById('in-name').value.trim();
+  if(!url)return;
+  if(!url.startsWith('http'))url='https://'+url;
+
+  // Check limit
+  var {count}=await sb.from('competitors').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);
+  if(count>=3){alert('Free plan: 3 competitors max. Upgrade to Pro for more!');return;}
+
+  var btn=document.getElementById('track-btn');
+  btn.textContent='Adding...';btn.disabled=true;
+
+  var domain=url.replace(/https?:\/\//,'').split('/')[0];
+  var {error}=await sb.from('competitors').insert({
+    user_id:currentUser.id,
+    url:url,
+    name:name||domain,
+    last_content:null,
+    last_scanned:null
+  });
+
+  btn.textContent='Track →';btn.disabled=false;
+
+  if(error){alert('Error: '+error.message);return;}
+  document.getElementById('in-url').value='';
+  document.getElementById('in-name').value='';
+  loadComps();
 }
 
-renderComps();
+// ── DELETE COMPETITOR ──
+async function deleteComp(id){
+  if(!confirm('Remove this competitor?'))return;
+  await sb.from('changes').delete().eq('competitor_id',id);
+  await sb.from('competitors').delete().eq('id',id);
+  loadComps();
+}
+
+// ── LOAD ALL CHANGES ──
+async function loadAllChanges(){
+  var el=document.getElementById('all-chg');
+  el.innerHTML='<div class="loading">Loading changes...</div>';
+
+  var {data:changes,error}=await sb.from('changes')
+    .select('*, competitors(name,url)')
+    .eq('user_id',currentUser.id)
+    .order('detected_at',{ascending:false})
+    .limit(50);
+
+  if(error){el.innerHTML='<div class="empty-state">Error loading changes</div>';return;}
+  if(!changes||changes.length===0){
+    el.innerHTML='<div class="empty-state">No changes detected yet 👀<br><span style="font-size:12px">Changes will appear here after competitors are scanned</span></div>';
+    return;
+  }
+
+  el.innerHTML=changes.map(function(ch){
+    var compName=ch.competitors?ch.competitors.name:'Unknown';
+    var tagClass=ch.type||'other';
+    return '<div class="dchange"><span class="dchg-tag '+tagClass+'">'+escHtml(ch.type||'other')+'</span><div style="flex:1"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">'+escHtml(compName)+'</div><div class="dchg-txt">'+escHtml(ch.summary||'')+'</div><div class="dchg-ai">'+escHtml(ch.insight||'')+'</div></div><div class="dchg-time">'+timeAgo(ch.detected_at)+'</div></div>';
+  }).join('');
+}
+
+function escHtml(s){
+  if(!s)return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 </script>
 
 <!-- AUTH MODAL -->
 <div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:9000;align-items:center;justify-content:center;">
-  <!-- SIGNUP -->
   <div id="auth-signup" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:440px;max-width:90vw;">
     <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:8px;">Create account</div>
     <div style="font-size:14px;color:var(--muted);margin-bottom:32px;">Free forever. No credit card required.</div>
@@ -626,7 +649,6 @@ renderComps();
     <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">Already have an account? <span style="color:var(--accent);cursor:pointer;" onclick="document.getElementById('auth-signup').style.display='none';document.getElementById('auth-login').style.display='block'">Log in</span></div>
     <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:var(--muted);cursor:pointer;" onclick="closeAuthModal()">← Back</span></div>
   </div>
-  <!-- LOGIN -->
   <div id="auth-login" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:440px;max-width:90vw;">
     <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:8px;">Welcome back</div>
     <div style="font-size:14px;color:var(--muted);margin-bottom:32px;">Log in to your Sensiva account</div>
