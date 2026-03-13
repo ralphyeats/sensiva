@@ -174,54 +174,103 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 
 /* ─── DASHBOARD ─── */
 #dash{display:none;min-height:100vh;padding-top:73px;}
-.dash-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:rgba(8,8,10,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-.dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 73px);}
-.dsidebar{background:var(--surface);border-right:1px solid var(--border);padding:28px 14px;position:sticky;top:73px;height:calc(100vh - 73px);overflow-y:auto;}
-.dsidebar-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;margin-bottom:3px;}
-.dsidebar-item:hover,.dsidebar-item.act{background:rgba(184,245,74,.07);color:var(--fg);}
-.dsidebar-item.act{color:var(--accent);}
-.dmain{padding:40px;overflow-y:auto;}
-.dtitle{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:32px;}
-.dstats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
-.dstat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;transition:border-color .3s;}
-.dstat:hover{border-color:rgba(184,245,74,.2);}
-.dstat-l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-.dstat-v{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;letter-spacing:-2px;}
+.dash-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(8,8,10,.95);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.dash-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 65px);}
+.dsidebar{background:var(--surface);border-right:1px solid var(--border);padding:24px 12px;position:sticky;top:65px;height:calc(100vh - 65px);overflow-y:auto;}
+.dsidebar-section{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(170,170,160,.4);padding:0 12px;margin:16px 0 6px;}
+.dsidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;margin-bottom:2px;}
+.dsidebar-item:hover{background:rgba(184,245,74,.05);color:var(--fg);}
+.dsidebar-item.act{background:rgba(184,245,74,.09);color:var(--accent);font-weight:600;}
+.dsidebar-badge{margin-left:auto;background:rgba(184,245,74,.15);color:var(--accent);font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;}
+.dmain{padding:36px 40px;overflow-y:auto;background:var(--bg);}
+.dpage-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.dtitle{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;letter-spacing:-1px;margin:0;}
+.dtitle-sub{font-size:13px;color:var(--muted);margin-top:4px;}
+
+/* STAT CARDS */
+.dstats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.dstat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;transition:all .25s;position:relative;overflow:hidden;}
+.dstat::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 0% 0%,rgba(184,245,74,.04) 0%,transparent 60%);opacity:0;transition:opacity .3s;}
+.dstat:hover{border-color:rgba(184,245,74,.2);transform:translateY(-1px);}
+.dstat:hover::before{opacity:1;}
+.dstat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-weight:600;}
+.dstat-v{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;letter-spacing:-2px;line-height:1;}
 .dstat-v.g{color:var(--accent);}
 .dstat-v.y{color:#fbbf24;}
-.dadd{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:24px;}
-.dadd-t{font-size:13px;font-weight:600;margin-bottom:14px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.dstat-v.b{color:#60a5fa;}
+.dstat-v.r{color:#f87171;}
+.dstat-trend{font-size:11px;margin-top:6px;color:var(--muted);}
+.dstat-trend.up{color:#34d399;}
+.dstat-trend.down{color:#f87171;}
+
+/* ADD FORM */
+.dadd{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px;margin-bottom:20px;}
+.dadd-t{font-size:11px;font-weight:700;margin-bottom:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
 .drow{display:flex;gap:10px;}
-.dinput{flex:1;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.dinput{flex:1;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:9px;color:var(--fg);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
 .dinput:focus{border-color:var(--accent);}
-.dinput::placeholder{color:var(--muted);}
-.dadd-btn{padding:12px 20px;background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;}
-.dadd-btn:hover{background:var(--fg);transform:scale(1.02);}
-.dcomp{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:14px;transition:all .3s;animation:slideIn .4s ease-out;}
-@keyframes slideIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.dcomp:hover{border-color:rgba(184,245,74,.25);}
-.dcomp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.dinput::placeholder{color:rgba(170,170,160,.35);}
+.dadd-btn{padding:11px 20px;background:var(--accent);color:var(--bg);border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;letter-spacing:.3px;}
+.dadd-btn:hover{background:#cef86a;transform:translateY(-1px);}
+
+/* COMPETITOR CARDS */
+.dcomp{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:12px;transition:all .3s;animation:slideIn .35s ease-out;}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.dcomp:hover{border-color:rgba(184,245,74,.2);box-shadow:0 4px 24px rgba(0,0,0,.2);}
+.dcomp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .dcomp-info{display:flex;align-items:center;gap:14px;}
-.dcomp-av{width:42px;height:42px;border-radius:10px;background:rgba(184,245,74,.09);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;}
-.dcomp-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
-.dcomp-url{font-size:12px;color:var(--muted);margin-top:2px;}
-.dbadge{display:flex;align-items:center;gap:6px;font-size:11px;padding:4px 12px;border-radius:100px;}
-.dbadge.ok{background:rgba(184,245,74,.1);color:var(--accent);border:1px solid rgba(184,245,74,.2);}
-.dchange{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);margin-bottom:8px;transition:border-color .2s;animation:slideIn .3s ease-out;}
-.dchange:hover{border-color:rgba(184,245,74,.15);}
-.dchg-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px;}
-.dchg-tag.price{background:rgba(248,113,113,.14);color:#f87171;}
-.dchg-tag.product{background:rgba(184,245,74,.14);color:var(--accent);}
-.dchg-tag.content{background:rgba(147,197,253,.14);color:#93c5fd;}
-.dchg-tag.hiring{background:rgba(251,191,36,.14);color:#fbbf24;}
-.dchg-tag.other{background:rgba(168,85,247,.14);color:#a855f7;}
-.dchg-txt{font-size:13px;margin-bottom:4px;line-height:1.5;}
-.dchg-ai{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;}
-.dchg-time{font-size:11px;color:var(--muted);white-space:nowrap;margin-left:auto;}
-.empty-state{padding:60px;text-align:center;color:var(--muted);font-size:14px;line-height:2;}
+.dcomp-av{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(184,245,74,.15),rgba(184,245,74,.05));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;border:1px solid rgba(184,245,74,.1);}
+.dcomp-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:-.3px;}
+.dcomp-url{font-size:11px;color:var(--muted);margin-top:3px;}
+.dcomp-url a{color:var(--muted);text-decoration:none;transition:color .2s;}
+.dcomp-url a:hover{color:var(--accent);}
+.dcomp-actions{display:flex;gap:8px;align-items:center;}
+.dbadge{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:4px 10px;border-radius:100px;letter-spacing:.5px;}
+.dbadge.ok{background:rgba(184,245,74,.08);color:var(--accent);border:1px solid rgba(184,245,74,.15);}
+.dbadge.warn{background:rgba(251,191,36,.08);color:#fbbf24;border:1px solid rgba(251,191,36,.15);}
+.dcomp-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,.05);}
+.dcomp-meta{display:flex;flex-direction:column;gap:3px;}
+.dcomp-meta-l{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(170,170,160,.5);}
+.dcomp-meta-v{font-size:13px;color:var(--fg);}
+.dcomp-meta-v.accent{color:var(--accent);font-weight:600;}
+.dcomp-meta-v.warn{color:#fbbf24;font-weight:600;}
+.dcomp-last-change{padding:10px 14px;background:rgba(184,245,74,.04);border:1px solid rgba(184,245,74,.08);border-radius:10px;margin-top:12px;}
+.dcomp-last-change-l{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(184,245,74,.5);margin-bottom:5px;}
+.dcomp-last-change-t{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* CHANGES FEED */
+.dchange{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;background:var(--surface);border-radius:12px;border:1px solid var(--border);margin-bottom:10px;transition:all .2s;animation:slideIn .3s ease-out;}
+.dchange:hover{border-color:rgba(184,245,74,.15);transform:translateX(2px);}
+.dchg-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.dchg-icon.price{background:rgba(248,113,113,.1);}
+.dchg-icon.product{background:rgba(184,245,74,.1);}
+.dchg-icon.content{background:rgba(147,197,253,.1);}
+.dchg-icon.hiring{background:rgba(251,191,36,.1);}
+.dchg-icon.other{background:rgba(168,85,247,.1);}
+.dchg-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:4px;white-space:nowrap;display:inline-block;margin-bottom:6px;}
+.dchg-tag.price{background:rgba(248,113,113,.12);color:#f87171;}
+.dchg-tag.product{background:rgba(184,245,74,.12);color:var(--accent);}
+.dchg-tag.content{background:rgba(147,197,253,.12);color:#93c5fd;}
+.dchg-tag.hiring{background:rgba(251,191,36,.12);color:#fbbf24;}
+.dchg-tag.other{background:rgba(168,85,247,.12);color:#a855f7;}
+.dchg-comp{font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:600;letter-spacing:.3px;}
+.dchg-txt{font-size:13px;margin-bottom:6px;line-height:1.55;color:var(--fg);}
+.dchg-ai{font-size:12px;color:rgba(184,245,74,.7);line-height:1.55;padding:8px 10px;background:rgba(184,245,74,.04);border-radius:7px;border-left:2px solid rgba(184,245,74,.2);}
+.dchg-time{font-size:10px;color:var(--muted);white-space:nowrap;margin-left:auto;padding-top:2px;}
+
+/* MINI SPARKLINE */
+.sparkline{display:flex;align-items:flex-end;gap:3px;height:32px;}
+.spark-bar{width:6px;border-radius:3px 3px 0 0;background:rgba(184,245,74,.25);transition:background .2s;min-height:3px;}
+.spark-bar.active{background:var(--accent);}
+
+.empty-state{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;line-height:2.2;}
+.empty-icon{font-size:40px;margin-bottom:16px;opacity:.5;}
 .loading{padding:40px;text-align:center;color:var(--muted);font-size:13px;}
-.del-btn{padding:6px 12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;}
-.del-btn:hover{color:#f87171;border-color:rgba(248,113,113,.3);}
+.del-btn{padding:5px 12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;}
+.del-btn:hover{color:#f87171;border-color:rgba(248,113,113,.25);background:rgba(248,113,113,.05);}
+.scan-btn{padding:5px 12px;background:rgba(184,245,74,.08);color:var(--accent);border:1px solid rgba(184,245,74,.2);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;font-weight:600;}
+.scan-btn:hover{background:rgba(184,245,74,.15);}
+.section-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
 
 /* PULSE DOT */
 .pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);position:relative;display:inline-block;}
@@ -623,60 +672,134 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 
   <div class="dash-layout">
     <aside class="dsidebar">
-      <div class="dsidebar-item act" onclick="setTab(this,'comp')">🏢 Competitors</div>
-      <div class="dsidebar-item" onclick="setTab(this,'changes')">⚡ All Changes</div>
-      <div class="dsidebar-item" onclick="setTab(this,'alerts')">🔔 Alerts</div>
-      <div class="dsidebar-item" style="margin-top:16px;" onclick="setTab(this,'settings')">⚙️ Settings</div>
+      <div class="dsidebar-section">Main</div>
+      <div class="dsidebar-item act" id="sid-comp" onclick="setTab(this,'comp')">🏢 &nbsp;Competitors</div>
+      <div class="dsidebar-item" id="sid-changes" onclick="setTab(this,'changes')">⚡ &nbsp;All Changes <span class="dsidebar-badge" id="chg-badge" style="display:none">0</span></div>
+      <div class="dsidebar-section">Settings</div>
+      <div class="dsidebar-item" id="sid-alerts" onclick="setTab(this,'alerts')">🔔 &nbsp;Alerts</div>
+      <div class="dsidebar-item" id="sid-settings" onclick="setTab(this,'settings')">⚙️ &nbsp;Settings</div>
     </aside>
 
     <main class="dmain">
+
+      <!-- ── COMPETITORS TAB ── -->
       <div id="tab-comp">
-        <div class="dtitle">Competitors</div>
-        <div class="dstats">
-          <div class="dstat"><div class="dstat-l">Tracking</div><div class="dstat-v g" id="s-tot">0</div></div>
-          <div class="dstat"><div class="dstat-l">Changes (all time)</div><div class="dstat-v y" id="s-chg">0</div></div>
-          <div class="dstat"><div class="dstat-l">Last scan</div><div class="dstat-v" style="font-size:18px;margin-top:6px" id="s-last">—</div></div>
-          <div class="dstat"><div class="dstat-l">Scan frequency</div><div class="dstat-v" style="font-size:18px;margin-top:6px">Daily</div></div>
+        <div class="dpage-header">
+          <div>
+            <div class="dtitle">Competitors</div>
+            <div class="dtitle-sub" id="dtitle-sub">Loading your watchlist...</div>
+          </div>
         </div>
+
+        <div class="dstats">
+          <div class="dstat">
+            <div class="dstat-l">Tracking</div>
+            <div class="dstat-v g" id="s-tot">0</div>
+            <div class="dstat-trend">of 3 on free plan</div>
+          </div>
+          <div class="dstat">
+            <div class="dstat-l">Changes detected</div>
+            <div class="dstat-v y" id="s-chg">0</div>
+            <div class="dstat-trend" id="s-chg-trend">all time</div>
+          </div>
+          <div class="dstat">
+            <div class="dstat-l">Last scan</div>
+            <div class="dstat-v b" style="font-size:20px;margin-top:6px;letter-spacing:-.5px" id="s-last">—</div>
+            <div class="dstat-trend">auto · daily at 9am</div>
+          </div>
+          <div class="dstat">
+            <div class="dstat-l">Activity (7 days)</div>
+            <div class="sparkline" id="sparkline">
+              <div class="spark-bar" style="height:20%"></div>
+              <div class="spark-bar" style="height:20%"></div>
+              <div class="spark-bar" style="height:20%"></div>
+              <div class="spark-bar" style="height:20%"></div>
+              <div class="spark-bar" style="height:20%"></div>
+              <div class="spark-bar" style="height:20%"></div>
+              <div class="spark-bar active" style="height:20%"></div>
+            </div>
+          </div>
+        </div>
+
         <div class="dadd">
           <div class="dadd-t">Track a new competitor</div>
           <div class="drow">
             <input class="dinput" id="in-url" placeholder="https://competitor.com" type="url">
-            <input class="dinput" id="in-name" placeholder="Name (optional)" style="max-width:200px">
+            <input class="dinput" id="in-name" placeholder="Name (optional)" style="max-width:180px">
             <button class="dadd-btn" id="track-btn" onclick="addComp()">Track →</button>
           </div>
         </div>
+
+        <div class="section-title">Your watchlist</div>
         <div id="comp-list"><div class="loading">Loading...</div></div>
       </div>
 
+      <!-- ── CHANGES TAB ── -->
       <div id="tab-changes" style="display:none">
-        <div class="dtitle">All Changes</div>
-        <div id="all-chg"><div class="loading">Loading...</div></div>
+        <div class="dpage-header">
+          <div>
+            <div class="dtitle">All Changes</div>
+            <div class="dtitle-sub">Every detected change, analyzed by AI</div>
+          </div>
+        </div>
+        <div id="all-chg"><div class="loading">Loading changes...</div></div>
       </div>
 
+      <!-- ── ALERTS TAB ── -->
       <div id="tab-alerts" style="display:none">
-        <div class="dtitle">Alert Settings</div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:480px">
-          <div style="font-size:14px;font-weight:600;margin-bottom:18px">Email notifications</div>
-          <input class="dinput" placeholder="your@email.com" style="width:100%;margin-bottom:14px">
-          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> Price changes</label>
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> New products / features</label>
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> Content updates</label>
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> Hiring signals</label>
+        <div class="dpage-header">
+          <div>
+            <div class="dtitle">Alert Settings</div>
+            <div class="dtitle-sub">Get notified when competitors make moves</div>
           </div>
-          <button class="dadd-btn">Save settings</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;">📧 Email alerts</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Instant email when a competitor changes</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Your email</div>
+            <input class="dinput" id="alert-email" placeholder="your@email.com" style="width:100%;margin-bottom:16px;box-sizing:border-box;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Notify me about</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--fg);cursor:pointer;"><input type="checkbox" id="al-price" checked style="accent-color:var(--accent);width:15px;height:15px;"> <span>💰 Price changes</span></label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--fg);cursor:pointer;"><input type="checkbox" id="al-product" checked style="accent-color:var(--accent);width:15px;height:15px;"> <span>🚀 New products / features</span></label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--fg);cursor:pointer;"><input type="checkbox" id="al-hiring" style="accent-color:var(--accent);width:15px;height:15px;"> <span>👥 Hiring signals</span></label>
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--fg);cursor:pointer;"><input type="checkbox" id="al-content" style="accent-color:var(--accent);width:15px;height:15px;"> <span>📝 Content updates</span></label>
+            </div>
+            <button class="dadd-btn" onclick="saveAlerts()" style="width:100%;">Save alert settings</button>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;opacity:.6;">
+            <div style="font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;">💬 Slack alerts <span style="font-size:9px;background:rgba(184,245,74,.1);color:var(--accent);padding:2px 8px;border-radius:100px;letter-spacing:1px;font-weight:700;">PRO</span></div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:20px;">Send changes directly to a Slack channel</div>
+            <input class="dinput" placeholder="Slack webhook URL" disabled style="width:100%;margin-bottom:16px;box-sizing:border-box;opacity:.5;">
+            <button class="dadd-btn" style="width:100%;opacity:.5;cursor:not-allowed;" disabled>Upgrade to Pro →</button>
+          </div>
         </div>
       </div>
 
+      <!-- ── SETTINGS TAB ── -->
       <div id="tab-settings" style="display:none">
-        <div class="dtitle">Settings</div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:480px">
-          <div style="font-size:14px;font-weight:600;margin-bottom:8px">Account</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:24px" id="settings-email">—</div>
-          <div style="font-size:14px;font-weight:600;margin-bottom:8px">Plan</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:24px">Free — 3 competitors, daily scans</div>
-          <button class="dadd-btn">Upgrade to Pro →</button>
+        <div class="dpage-header">
+          <div>
+            <div class="dtitle">Settings</div>
+            <div class="dtitle-sub">Manage your account and plan</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Account</div>
+            <div style="font-size:15px;font-weight:600;margin-bottom:20px;" id="settings-email">—</div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Current plan</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+              <span style="font-size:15px;font-weight:700;">Free</span>
+              <span style="font-size:10px;background:rgba(255,255,255,.06);color:var(--muted);padding:3px 10px;border-radius:100px;border:1px solid var(--border);">3 competitors · daily scans</span>
+            </div>
+            <button class="dadd-btn" style="width:100%;">Upgrade to Pro — $15/mo →</button>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Danger zone</div>
+            <button onclick="doLogout()" style="width:100%;padding:11px;background:transparent;color:#f87171;border:1px solid rgba(248,113,113,.25);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(248,113,113,.06)'" onmouseout="this.style.background='transparent'">Sign out</button>
+          </div>
         </div>
       </div>
     </main>
@@ -730,6 +853,17 @@ function mobTab(tab) {
   var tabEl = document.getElementById('tab-'+tab);
   if(tabEl) tabEl.style.display='block';
   if(tab==='changes') loadAllChanges();
+}
+
+function saveAlerts(){
+  var email=document.getElementById('alert-email').value.trim();
+  if(!email){alert('Please enter your email address');return;}
+  // Store in Supabase user metadata (future: save to DB)
+  localStorage.setItem('sensiva_alert_email',email);
+  var btn=event.target;
+  var orig=btn.textContent;
+  btn.textContent='✓ Saved!';btn.style.background='#34d399';btn.style.color='#08080a';
+  setTimeout(function(){btn.textContent=orig;btn.style.background='';btn.style.color='';},2000);
 }
 
 function escHtml(s){
@@ -801,6 +935,10 @@ function showDash(){
   document.body.style.cursor='default';
   cur.style.display='none';ring.style.display='none';
   var mbn=document.getElementById('mobile-nav');if(mbn)mbn.style.display='';
+  var savedEmail=localStorage.getItem('sensiva_alert_email');
+  var alertInput=document.getElementById('alert-email');
+  if(alertInput&&savedEmail)alertInput.value=savedEmail;
+  else if(alertInput&&currentUser)alertInput.value=currentUser.email||'';
   var el=document.getElementById('settings-email');
   if(el)el.textContent=currentUser.email;
   loadComps();
@@ -830,27 +968,101 @@ async function loadComps(){
   document.getElementById('plan-badge').textContent='Free — '+(comps?comps.length:0)+'/3 used';
   var lastScan=comps&&comps.length>0?comps.reduce(function(a,b){return new Date(a.last_scanned||0)>new Date(b.last_scanned||0)?a:b;},comps[0]):null;
   document.getElementById('s-last').textContent=lastScan&&lastScan.last_scanned?timeAgo(lastScan.last_scanned):'Never';
-  var {data:changes}=await sb.from('changes').select('id,competitor_id').eq('user_id',currentUser.id);
+  var {data:changes}=await sb.from('changes').select('id,competitor_id,detected_at,summary').eq('user_id',currentUser.id).order('detected_at',{ascending:false});
   document.getElementById('s-chg').textContent=changes?changes.length:0;
   var chgMap={};
   if(changes)changes.forEach(function(c){chgMap[c.competitor_id]=(chgMap[c.competitor_id]||0)+1;});
-  renderComps(comps||[],chgMap);
+  renderComps(comps||[],chgMap,changes||[]);
 }
 
-function renderComps(comps,chgMap){
+function renderComps(comps,chgMap,lastChanges){
   var el=document.getElementById('comp-list');
+  var sub=document.getElementById('dtitle-sub');
   if(comps.length===0){
-    el.innerHTML='<div class="empty-state">No competitors yet — add one above 👆<br><span style="font-size:12px">Your first scan will run automatically at 9am</span></div>';
+    if(sub) sub.textContent='No competitors yet';
+    el.innerHTML='<div class="empty-state"><div class="empty-icon">🔭</div>No competitors yet — add one above 👆<br><span style="font-size:12px;color:var(--muted)">Your first scan will run automatically at 9am</span></div>';
     return;
   }
+  if(sub) sub.textContent='Tracking '+comps.length+' competitor'+(comps.length>1?'s':'')+' · updates daily at 9am';
+
+  // Update change badge in sidebar
+  var totalChg=Object.values(chgMap).reduce(function(a,b){return a+b;},0);
+  var badge=document.getElementById('chg-badge');
+  if(badge){badge.textContent=totalChg;badge.style.display=totalChg>0?'inline':'none';}
+
+  // Build sparkline from last 7 days
+  buildSparkline(lastChanges||[]);
+
   el.innerHTML=comps.map(function(c){
-    var initials=(c.name||c.url||'??').replace(/https?:\/\//,'').substring(0,2).toUpperCase();
+    var initials=(c.name||c.url||'??').replace(/https?:\/\//,'').replace(/www\./,'').substring(0,2).toUpperCase();
     var chgCount=chgMap[c.id]||0;
-    var chgHtml=chgCount>0
-      ?'<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#fbbf24;margin-bottom:4px">⚡ '+chgCount+' change'+(chgCount>1?'s':'')+' detected</div>'
-      :'<div style="font-size:12px;color:var(--muted);margin-bottom:4px">👁️ Watching — no changes yet</div>';
-    return '<div class="dcomp"><div class="dcomp-h"><div class="dcomp-info"><div class="dcomp-av">'+initials+'</div><div><div class="dcomp-name">'+escHtml(c.name||c.url)+'</div><div class="dcomp-url">'+escHtml(c.url)+'</div></div></div><div style="display:flex;gap:8px;align-items:center"><span class="dbadge ok">● Watching</span><button class="del-btn" onclick="deleteComp(\''+c.id+'\')">Remove</button></div></div>'+chgHtml+'<div style="font-size:11px;color:var(--muted)">Last scanned: '+timeAgo(c.last_scanned)+'</div></div>';
+    var lastChg=lastChanges&&lastChanges.find(function(ch){return ch.competitor_id===c.id;});
+    var domain=c.url.replace(/https?:\/\//,'').replace(/www\./,'').split('/')[0];
+    var scannedAgo=c.last_scanned?timeAgo(c.last_scanned):'Never scanned';
+
+    var statusBadge=c.last_scanned
+      ?'<span class="dbadge ok">● Active</span>'
+      :'<span class="dbadge warn">⏳ Pending</span>';
+
+    var chgSection=chgCount>0
+      ?'<div class="dcomp-last-change"><div class="dcomp-last-change-l">⚡ Last change detected</div><div class="dcomp-last-change-t">'+(lastChg?escHtml(lastChg.summary):'Change detected')+'</div></div>'
+      :'';
+
+    return '<div class="dcomp">'+
+      '<div class="dcomp-h">'+
+        '<div class="dcomp-info">'+
+          '<div class="dcomp-av">'+initials+'</div>'+
+          '<div>'+
+            '<div class="dcomp-name">'+escHtml(c.name||domain)+'</div>'+
+            '<div class="dcomp-url"><a href="'+escHtml(c.url)+'" target="_blank">'+escHtml(c.url)+'</a></div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="dcomp-actions">'+
+          statusBadge+
+          '<button class="scan-btn" onclick="manualScan(''+c.id+'')">↻ Scan</button>'+
+          '<button class="del-btn" onclick="deleteComp(''+c.id+'')">Remove</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="dcomp-body">'+
+        '<div class="dcomp-meta"><div class="dcomp-meta-l">Changes detected</div><div class="dcomp-meta-v '+(chgCount>0?'warn':'')+'">'+chgCount+(chgCount>0?' ⚡':'')+' </div></div>'+
+        '<div class="dcomp-meta"><div class="dcomp-meta-l">Last scanned</div><div class="dcomp-meta-v">'+scannedAgo+'</div></div>'+
+        '<div class="dcomp-meta"><div class="dcomp-meta-l">Category</div><div class="dcomp-meta-v accent">'+getCategoryLabel(c.url)+'</div></div>'+
+      '</div>'+
+      chgSection+
+    '</div>';
   }).join('');
+}
+
+function getCategoryLabel(url){
+  var u=(url||'').toLowerCase();
+  if(u.match(/hotel|booking|airbnb|travel|flight|resort/)) return '✈️ Travel';
+  if(u.match(/shop|store|buy|cart|product|ecommerce/)) return '🛍️ E-Commerce';
+  return '⚡ SaaS';
+}
+
+function buildSparkline(changes){
+  var el=document.getElementById('sparkline');
+  if(!el) return;
+  var days=[0,0,0,0,0,0,0];
+  var now=new Date();
+  changes.forEach(function(ch){
+    var d=new Date(ch.detected_at);
+    var diff=Math.floor((now-d)/(1000*60*60*24));
+    if(diff>=0&&diff<7) days[6-diff]++;
+  });
+  var max=Math.max.apply(null,days)||1;
+  el.innerHTML=days.map(function(v,i){
+    var h=Math.max(8,Math.round((v/max)*100));
+    var isToday=i===6;
+    return '<div class="spark-bar'+(isToday?' active':'')+'" style="height:'+h+'%" title="'+v+' changes"></div>';
+  }).join('');
+}
+
+function manualScan(compId){
+  // placeholder — will trigger manual scan in future
+  var btn=event.target;
+  btn.textContent='Scanning...';btn.disabled=true;
+  setTimeout(function(){btn.textContent='↻ Scan';btn.disabled=false;},2000);
 }
 
 async function addComp(){
@@ -887,10 +1099,23 @@ async function loadAllChanges(){
     el.innerHTML='<div class="empty-state">No changes detected yet 👀<br><span style="font-size:12px">Changes will appear here after competitors are scanned</span></div>';
     return;
   }
+  var icons={price:'💰',product:'🚀',content:'📝',hiring:'👥',other:'🔔'};
+  var labels={price:'Price Change',product:'New Feature/Product',content:'Content Update',hiring:'Hiring Signal',other:'Update'};
   el.innerHTML=changes.map(function(ch){
     var compName=ch.competitors?ch.competitors.name:'Unknown';
-    var tagClass=ch.type||'other';
-    return '<div class="dchange"><span class="dchg-tag '+tagClass+'">'+escHtml(ch.type||'other')+'</span><div style="flex:1"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">'+escHtml(compName)+'</div><div class="dchg-txt">'+escHtml(ch.summary||'')+'</div><div class="dchg-ai">'+escHtml(ch.insight||'')+'</div></div><div class="dchg-time">'+timeAgo(ch.detected_at)+'</div></div>';
+    var t=ch.type||'other';
+    var icon=icons[t]||'🔔';
+    var label=labels[t]||'Update';
+    return '<div class="dchange">'+
+      '<div class="dchg-icon '+t+'">'+icon+'</div>'+
+      '<div style="flex:1;min-width:0">'+
+        '<span class="dchg-tag '+t+'">'+label+'</span>'+
+        '<div class="dchg-comp">'+escHtml(compName)+'</div>'+
+        '<div class="dchg-txt">'+escHtml(ch.summary||'')+'</div>'+
+        (ch.insight?'<div class="dchg-ai">'+escHtml(ch.insight)+'</div>':'')+
+      '</div>'+
+      '<div class="dchg-time">'+timeAgo(ch.detected_at)+'</div>'+
+    '</div>';
   }).join('');
 }
 
