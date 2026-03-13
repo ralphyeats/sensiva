@@ -965,7 +965,12 @@ async function loadComps(){
   var {data:comps,error}=await sb.from('competitors').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
   if(error){console.error(error);return;}
   document.getElementById('s-tot').textContent=comps?comps.length:0;
-  document.getElementById('plan-badge').textContent='Free — '+(comps?comps.length:0)+'/3 used';
+  var ADMIN_ID2='baabc5fc-4bae-4c7b-8dc5-5fb4620f59b0';
+  if(currentUser.id===ADMIN_ID2){
+    document.getElementById('plan-badge').textContent='Admin — unlimited';
+  } else {
+    document.getElementById('plan-badge').textContent='Free — '+(comps?comps.length:0)+'/3 used';
+  }
   var lastScan=comps&&comps.length>0?comps.reduce(function(a,b){return new Date(a.last_scanned||0)>new Date(b.last_scanned||0)?a:b;},comps[0]):null;
   document.getElementById('s-last').textContent=lastScan&&lastScan.last_scanned?timeAgo(lastScan.last_scanned):'Never';
   var {data:changes}=await sb.from('changes').select('id,competitor_id,detected_at,summary').eq('user_id',currentUser.id).order('detected_at',{ascending:false});
@@ -1070,8 +1075,10 @@ async function addComp(){
   var name=document.getElementById('in-name').value.trim();
   if(!url)return;
   if(!url.startsWith('http'))url='https://'+url;
+  var ADMIN_ID='baabc5fc-4bae-4c7b-8dc5-5fb4620f59b0';
+  var isAdmin=currentUser.id===ADMIN_ID;
   var {count}=await sb.from('competitors').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);
-  if(count>=3){alert('Free plan: 3 competitors max. Upgrade to Pro!');return;}
+  if(!isAdmin && count>=3){alert('Free plan: 3 competitors max. Upgrade to Pro!');return;}
   var btn=document.getElementById('track-btn');
   btn.textContent='Adding...';btn.disabled=true;
   var domain=url.replace(/https?:\/\//,'').split('/')[0];
