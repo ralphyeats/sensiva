@@ -161,11 +161,14 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
 
 /* FLOATING CARDS ANIMATION */
-@keyframes floatup{0%{opacity:0;transform:translateY(20px);}10%{opacity:1;transform:translateY(0);}80%{opacity:1;transform:translateY(-60px);}100%{opacity:0;transform:translateY(-80px);}}
-.float-card{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-size:12px;pointer-events:none;animation:floatup 4s ease-in-out infinite;white-space:nowrap;}
-.float-card:nth-child(1){left:10%;bottom:20%;animation-delay:0s;}
-.float-card:nth-child(2){left:60%;bottom:30%;animation-delay:1.3s;}
-.float-card:nth-child(3){left:35%;bottom:15%;animation-delay:2.6s;}
+@keyframes floatup{0%{opacity:0;transform:translateY(16px);}10%{opacity:1;transform:translateY(0);}80%{opacity:1;transform:translateY(-50px);}100%{opacity:0;transform:translateY(-66px);}}
+.float-stack{position:absolute;right:56px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;pointer-events:none;}
+.float-card{background:rgba(15,15,20,.9);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:12px;backdrop-filter:blur(12px);animation:floatup 5s ease-in-out infinite;white-space:nowrap;min-width:260px;}
+.float-card:nth-child(1){animation-delay:0s;}
+.float-card:nth-child(2){animation-delay:1s;}
+.float-card:nth-child(3){animation-delay:2s;}
+.float-card:nth-child(4){animation-delay:3s;}
+.float-card:nth-child(5){animation-delay:4s;}
 .float-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
 .float-text{color:var(--fg);}
 
@@ -236,6 +239,17 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   .dsidebar{display:none;}
   .dstats{grid-template-columns:1fr 1fr;}
 }
+
+/* LANGUAGE SELECTOR */
+.lang-sel{position:relative;display:flex;align-items:center;}
+.lang-btn{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:rgba(238,238,232,.5);background:transparent;border:1px solid rgba(238,238,232,.15);padding:6px 12px;border-radius:100px;cursor:none;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.lang-btn:hover{color:var(--fg);border-color:rgba(238,238,232,.3);}
+.lang-flag{font-size:14px;}
+.lang-drop{position:absolute;top:calc(100% + 8px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:6px;min-width:140px;display:none;z-index:300;box-shadow:0 20px 40px rgba(0,0,0,.4);}
+.lang-sel:hover .lang-drop{display:block;}
+.lang-opt{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;}
+.lang-opt:hover{background:rgba(184,245,74,.07);color:var(--fg);}
+.lang-opt.active{color:var(--accent);}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -253,7 +267,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
     <a class="nav-a" href="#segments">Who it's for</a>
     <a class="nav-a" href="#process">How it works</a>
     <a class="nav-a" href="#pricing">Pricing</a>
-    <button class="nav-btn" style="background:transparent;color:var(--fg);border:1px solid rgba(238,238,232,.2);margin-right:-32px;" onclick="openAuthModal('login')">Log in</button>
+    <div class="lang-sel"><button class="lang-btn"><span class="lang-flag" id="cur-flag">🇺🇸</span><span id="cur-lang">EN</span> ▾</button><div class="lang-drop"><div class="lang-opt active" onclick="setLang('en')">🇺🇸 English</div><div class="lang-opt" onclick="setLang('fr')">🇫🇷 Français</div><div class="lang-opt" onclick="setLang('tr')">🇹🇷 Türkçe</div><div class="lang-opt" onclick="setLang('ru')">🇷🇺 Русский</div></div></div><button class="nav-btn" style="background:transparent;color:var(--fg);border:1px solid rgba(238,238,232,.2);margin-right:-32px;" id="nav-login-btn" onclick="openAuthModal('login')">Log in</button>
     <button class="nav-btn" onclick="showDash()">Start free →</button>
   </div>
 </nav>
@@ -266,17 +280,27 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   <div class="hero-bgtxt">SENSIVA</div>
 
   <!-- Floating alert cards -->
-  <div class="float-card" style="left:8%;bottom:28%">
-    <div class="float-label">Price change</div>
-    <div class="float-text">Shopify rival dropped plan $49→$29</div>
-  </div>
-  <div class="float-card" style="left:62%;bottom:32%">
-    <div class="float-label">New feature</div>
-    <div class="float-text">Competitor launched AI checkout</div>
-  </div>
-  <div class="float-card" style="left:38%;bottom:18%">
-    <div class="float-label">Hiring signal</div>
-    <div class="float-text">Rival posted 12 new ML engineer roles</div>
+  <div class="float-stack">
+    <div class="float-card">
+      <div class="float-label">⚡ Price change · SaaS</div>
+      <div class="float-text">Notion dropped Pro plan $16→$10/mo</div>
+    </div>
+    <div class="float-card">
+      <div class="float-label">🛍️ Flash sale · E-commerce</div>
+      <div class="float-text">Rival store launched 40% off campaign</div>
+    </div>
+    <div class="float-card">
+      <div class="float-label">👥 Hiring · SaaS</div>
+      <div class="float-text">Competitor posted 12 new ML engineer roles</div>
+    </div>
+    <div class="float-card">
+      <div class="float-label">✈️ Rate change · Travel</div>
+      <div class="float-text">Rival hotel dropped nightly rate by 22%</div>
+    </div>
+    <div class="float-card">
+      <div class="float-label">🚀 New product · SaaS</div>
+      <div class="float-text">Competitor launched AI-powered analytics</div>
+    </div>
   </div>
 
   <div class="hero-tag"><span class="hero-tag-dot"></span> AI Competitor Intelligence</div>
@@ -320,7 +344,18 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   <h2 class="rev d1" style="font-family:'Instrument Serif',serif;font-size:clamp(40px,5vw,68px);line-height:1.05;letter-spacing:-3px;text-align:center;margin-bottom:0;">Three industries where<br><i>intelligence is everything.</i></h2>
   <div class="segments">
     <div class="seg-card rev d1">
-      <div class="seg-icon">⚡</div>
+      <div class="seg-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="12" fill="rgba(184,245,74,0.08)"/>
+          <g stroke="#b8f54a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="12" y="14" width="24" height="20" rx="3" fill="none"/>
+            <path d="M17 22h14M17 27h8" opacity="0.5"/>
+            <circle cx="34" cy="14" r="5" fill="#08080a" stroke="#b8f54a"/>
+            <path d="M34 11v3l2 1" stroke-width="1.2"/>
+          </g>
+          <animateTransform attributeName="transform" type="scale" values="1;1.04;1" dur="2s" repeatCount="indefinite" additive="sum"/>
+        </svg>
+      </div>
       <div class="seg-title">SaaS & Software</div>
       <div class="seg-desc">Track competitor pricing pages, feature releases, changelog updates, and hiring signals. Know when a rival is about to ship something big — before they announce it.</div>
       <div class="seg-tags">
@@ -331,7 +366,24 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       </div>
     </div>
     <div class="seg-card rev d2">
-      <div class="seg-icon">🛍️</div>
+      <div class="seg-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="12" fill="rgba(184,245,74,0.08)"/>
+          <g stroke="#b8f54a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 18h20l-2 12H16L14 18z" fill="none"/>
+            <path d="M14 18l-2-4H9"/>
+            <circle cx="19" cy="33" r="1.5" fill="#b8f54a"/>
+            <circle cx="29" cy="33" r="1.5" fill="#b8f54a"/>
+            <path d="M20 23h8" opacity="0.5"/>
+          </g>
+          <g>
+            <circle cx="34" cy="15" r="4" fill="#b8f54a" opacity="0">
+              <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>
+            </circle>
+            <text x="32" y="18" font-size="6" fill="#08080a" font-weight="bold">%</text>
+          </g>
+        </svg>
+      </div>
       <div class="seg-title">E-Commerce</div>
       <div class="seg-desc">Monitor competitor stores for price drops, flash sales, new product launches, and homepage campaigns. React to promotions before your customers switch.</div>
       <div class="seg-tags">
@@ -342,7 +394,22 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       </div>
     </div>
     <div class="seg-card rev d3">
-      <div class="seg-icon">✈️</div>
+      <div class="seg-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="12" fill="rgba(184,245,74,0.08)"/>
+          <g stroke="#b8f54a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 30 C14 20, 20 16, 24 16 C28 16, 34 20, 38 30" fill="none"/>
+            <path d="M18 28l6-8 6 8" fill="none" opacity="0.6"/>
+            <circle cx="24" cy="20" r="2" fill="#b8f54a"/>
+          </g>
+          <g transform="translate(24,20)">
+            <circle r="2" fill="#b8f54a" opacity="0.3">
+              <animate attributeName="r" values="2;8;2" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+        </svg>
+      </div>
       <div class="seg-title">Travel & Hospitality</div>
       <div class="seg-desc">Watch rival booking platforms and hotels for rate changes, new package deals, seasonal promotions, and loyalty program updates. Stay competitive on every route.</div>
       <div class="seg-tags">
@@ -424,14 +491,14 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
     <div class="pcard featured rev d1">
       <div class="pcard-badge">MOST POPULAR</div>
       <div class="pcard-name">Pro</div>
-      <div class="pcard-price"><sup>$</sup>29</div>
+      <div class="pcard-price"><sup>$</sup>15</div>
       <div class="pcard-per">per month</div>
       <ul class="pcard-feats"><li>20 competitors</li><li>Hourly scans</li><li>Email + Slack alerts</li><li>Advanced AI analysis</li><li>90-day history</li></ul>
       <button class="pcard-btn pcard-btn-p" onclick="showDash()">Start free trial</button>
     </div>
     <div class="pcard rev d2">
       <div class="pcard-name">Agency</div>
-      <div class="pcard-price"><sup>$</sup>79</div>
+      <div class="pcard-price"><sup>$</sup>49</div>
       <div class="pcard-per">per month</div>
       <ul class="pcard-feats"><li>Unlimited competitors</li><li>Real-time scans</li><li>All integrations</li><li>Advanced AI insights</li><li>Unlimited history</li><li>Team access</li></ul>
       <button class="pcard-btn pcard-btn-g" onclick="showDash()">Contact us</button>
@@ -713,6 +780,281 @@ async function loadAllChanges(){
     return '<div class="dchange"><span class="dchg-tag '+tagClass+'">'+escHtml(ch.type||'other')+'</span><div style="flex:1"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">'+escHtml(compName)+'</div><div class="dchg-txt">'+escHtml(ch.summary||'')+'</div><div class="dchg-ai">'+escHtml(ch.insight||'')+'</div></div><div class="dchg-time">'+timeAgo(ch.detected_at)+'</div></div>';
   }).join('');
 }
+
+// ── i18n ──
+var LANGS = {
+  en: {
+    nav_how: 'Who it\'s for', nav_works: 'How it works', nav_pricing: 'Pricing',
+    nav_login: 'Log in', nav_start: 'Start free →',
+    hero_tag: 'AI Competitor Intelligence',
+    hero_h1: 'Your rivals move.<br><i>You move faster.</i>',
+    hero_desc: 'Sensiva watches competitor websites 24/7 — every price change, product launch, or hiring signal — and delivers AI-powered strategic insights before you even notice.',
+    hero_cta: 'Get started free →',
+    hero_scroll: 'Scroll to explore',
+    seg_label: 'Built for',
+    seg_title: 'Three industries where<br><i>intelligence is everything.</i>',
+    seg1_title: 'SaaS & Software', seg1_desc: 'Track competitor pricing pages, feature releases, changelog updates, and hiring signals. Know when a rival is about to ship something big — before they announce it.',
+    seg2_title: 'E-Commerce', seg2_desc: 'Monitor competitor stores for price drops, flash sales, new product launches, and homepage campaigns. React to promotions before your customers switch.',
+    seg3_title: 'Travel & Hospitality', seg3_desc: 'Watch rival booking platforms and hotels for rate changes, new package deals, seasonal promotions, and loyalty program updates. Stay competitive on every route.',
+    about_label: 'What we do',
+    about_h2: 'Stop guessing.<br>Start knowing.',
+    about_p: 'Most businesses find out about competitor moves too late — when customers are already leaving. Sensiva watches every page, every day. The moment something changes, you get a clear AI insight telling you exactly what to do.',
+    about_cta: 'See it live →',
+    process_h2: 'Simple.<br>Powerful.<br>Automatic.',
+    process_p: 'Set it up once. We handle scanning, analyzing, and alerting — you just act on the intelligence.',
+    step1_t: 'Add competitors', step1_d: 'Paste any URL. SaaS pricing page, e-commerce store, travel booking site — anything works.',
+    step2_t: 'We watch daily', step2_d: 'Prices, products, features, job listings — nothing slips through our scanner.',
+    step3_t: 'AI analyzes', step3_d: 'Industry-specific AI tells you what changed and what it means strategically for your business.',
+    step4_t: 'You act first', step4_d: 'Get clear, actionable intelligence. React before your competitors even finish their announcement.',
+    pricing_h2: 'Honest pricing.',
+    pricing_p: 'Start free. Upgrade when you\'re ready. No surprises.',
+    free_name: 'Free', free_per: 'forever free', free_cta: 'Get started',
+    pro_name: 'Pro', pro_per: 'per month', pro_cta: 'Start free trial',
+    agency_name: 'Agency', agency_per: 'per month', agency_cta: 'Contact us',
+    cta_h2: 'Ready to always<br>be one step<br><i>ahead?</i>',
+    cta_btn: 'Start for free →',
+    dash_upgrade: 'Upgrade →', dash_logout: 'Log out',
+    dash_comp: 'Competitors', dash_changes: '⚡ All Changes', dash_alerts: '🔔 Alerts', dash_settings: '⚙️ Settings',
+    add_placeholder_url: 'https://competitor.com', add_placeholder_name: 'Name (optional)', add_btn: 'Track →',
+    empty_comp: 'No competitors yet — add one above 👆',
+    empty_scan: 'Your first scan will run automatically at 9am',
+    no_changes: 'No changes detected yet 👀',
+  },
+  fr: {
+    nav_how: 'Pour qui', nav_works: 'Comment ça marche', nav_pricing: 'Tarifs',
+    nav_login: 'Connexion', nav_start: 'Commencer →',
+    hero_tag: 'Intelligence Concurrentielle IA',
+    hero_h1: 'Vos rivaux bougent.<br><i>Vous bougez plus vite.</i>',
+    hero_desc: 'Sensiva surveille les sites concurrents 24h/24 — chaque changement de prix, lancement de produit ou signal d\'embauche — et vous livre des insights stratégiques propulsés par l\'IA.',
+    hero_cta: 'Commencer gratuitement →',
+    hero_scroll: 'Défiler pour explorer',
+    seg_label: 'Conçu pour',
+    seg_title: 'Trois secteurs où<br><i>l\'intelligence est tout.</i>',
+    seg1_title: 'SaaS & Logiciels', seg1_desc: 'Suivez les pages de tarification, les nouvelles fonctionnalités et les signaux de recrutement de vos concurrents.',
+    seg2_title: 'E-Commerce', seg2_desc: 'Surveillez les baisses de prix, les ventes flash et les nouvelles campagnes promotionnelles de vos concurrents.',
+    seg3_title: 'Voyage & Hôtellerie', seg3_desc: 'Observez les changements de tarifs, les nouvelles offres et les mises à jour des programmes de fidélité des plateformes rivales.',
+    about_label: 'Ce que nous faisons',
+    about_h2: 'Arrêtez de deviner.<br>Commencez à savoir.',
+    about_p: 'La plupart des entreprises découvrent les mouvements concurrents trop tard. Sensiva surveille chaque page, chaque jour. Dès qu\'un changement survient, vous recevez un insight clair.',
+    about_cta: 'Voir en direct →',
+    process_h2: 'Simple.<br>Puissant.<br>Automatique.',
+    process_p: 'Configurez une fois. Nous gérons la surveillance, l\'analyse et les alertes.',
+    step1_t: 'Ajoutez des concurrents', step1_d: 'Collez n\'importe quelle URL.',
+    step2_t: 'Nous surveillons', step2_d: 'Prix, produits, offres d\'emploi — rien ne passe.',
+    step3_t: 'L\'IA analyse', step3_d: 'Une IA spécialisée vous dit ce qui a changé et ce que cela signifie.',
+    step4_t: 'Vous agissez en premier', step4_d: 'Intelligence claire et actionnable, avant que vos concurrents finissent leur annonce.',
+    pricing_h2: 'Tarifs honnêtes.',
+    pricing_p: 'Commencez gratuitement. Upgradez quand vous êtes prêt.',
+    free_name: 'Gratuit', free_per: 'toujours gratuit', free_cta: 'Commencer',
+    pro_name: 'Pro', pro_per: 'par mois', pro_cta: 'Essai gratuit',
+    agency_name: 'Agence', agency_per: 'par mois', agency_cta: 'Contactez-nous',
+    cta_h2: 'Prêt à toujours<br>avoir une longueur<br><i>d\'avance ?</i>',
+    cta_btn: 'Commencer gratuitement →',
+    dash_upgrade: 'Upgrader →', dash_logout: 'Déconnexion',
+    dash_comp: '🏢 Concurrents', dash_changes: '⚡ Changements', dash_alerts: '🔔 Alertes', dash_settings: '⚙️ Paramètres',
+    add_placeholder_url: 'https://concurrent.com', add_placeholder_name: 'Nom (optionnel)', add_btn: 'Suivre →',
+    empty_comp: 'Pas encore de concurrents — ajoutez-en un 👆',
+    empty_scan: 'Votre premier scan démarrera automatiquement à 9h',
+    no_changes: 'Aucun changement détecté pour l\'instant 👀',
+  },
+  tr: {
+    nav_how: 'Kimler için', nav_works: 'Nasıl çalışır', nav_pricing: 'Fiyatlar',
+    nav_login: 'Giriş yap', nav_start: 'Ücretsiz başla →',
+    hero_tag: 'AI Rakip İstihbaratı',
+    hero_h1: 'Rakiplerin hareket eder.<br><i>Sen daha hızlı.</i>',
+    hero_desc: 'Sensiva rakip siteleri 7/24 izler — her fiyat değişikliği, ürün lansmanı veya işe alım sinyali — ve AI destekli stratejik içgörüler sunar.',
+    hero_cta: 'Ücretsiz başla →',
+    hero_scroll: 'Keşfetmek için kaydır',
+    seg_label: 'Kimler için',
+    seg_title: 'İstihbaratın her şey olduğu<br><i>üç sektör.</i>',
+    seg1_title: 'SaaS & Yazılım', seg1_desc: 'Rakip fiyatlandırma sayfalarını, özellik yayınlarını, değişiklik günlüklerini ve işe alım sinyallerini takip edin.',
+    seg2_title: 'E-Ticaret', seg2_desc: 'Rakip mağazalardaki fiyat düşüşlerini, flash satışları, yeni ürün lansmanlarını ve kampanyaları izleyin.',
+    seg3_title: 'Seyahat & Otelcilik', seg3_desc: 'Rakip rezervasyon platformlarını ve otelleri oran değişiklikleri, yeni paket teklifleri ve sadakat programı güncellemeleri için izleyin.',
+    about_label: 'Ne yapıyoruz',
+    about_h2: 'Tahmin etmeyi bırak.<br>Bilmeye başla.',
+    about_p: 'Çoğu şirket rakip hamlelerini çok geç öğrenir. Sensiva her sayfayı her gün izler. Bir değişiklik olduğu anda net bir AI içgörüsü alırsın.',
+    about_cta: 'Canlı gör →',
+    process_h2: 'Basit.<br>Güçlü.<br>Otomatik.',
+    process_p: 'Bir kez kur. Tarama, analiz ve uyarıları biz hallederiz.',
+    step1_t: 'Rakip ekle', step1_d: 'Herhangi bir URL yapıştır. SaaS, e-ticaret, seyahat sitesi — her şey çalışır.',
+    step2_t: 'Günlük izliyoruz', step2_d: 'Fiyatlar, ürünler, özellikler, iş ilanları — hiçbir şey kaçmaz.',
+    step3_t: 'AI analiz eder', step3_d: 'Sektöre özel AI sana ne değiştiğini ve stratejik olarak ne anlama geldiğini söyler.',
+    step4_t: 'Sen önce hareket et', step4_d: 'Net ve uygulanabilir istihbarat. Rakipler duyurusunu yapmadan önce tepki ver.',
+    pricing_h2: 'Dürüst fiyatlandırma.',
+    pricing_p: 'Ücretsiz başla. Hazır olunca yükselt. Sürpriz yok.',
+    free_name: 'Ücretsiz', free_per: 'sonsuza kadar ücretsiz', free_cta: 'Başla',
+    pro_name: 'Pro', pro_per: 'aylık', pro_cta: 'Ücretsiz dene',
+    agency_name: 'Ajans', agency_per: 'aylık', agency_cta: 'İletişime geç',
+    cta_h2: 'Her zaman bir adım<br><i>önde</i><br>olmaya hazır mısın?',
+    cta_btn: 'Ücretsiz başla →',
+    dash_upgrade: 'Yükselt →', dash_logout: 'Çıkış yap',
+    dash_comp: '🏢 Rakipler', dash_changes: '⚡ Tüm Değişiklikler', dash_alerts: '🔔 Uyarılar', dash_settings: '⚙️ Ayarlar',
+    add_placeholder_url: 'https://rakip.com', add_placeholder_name: 'İsim (isteğe bağlı)', add_btn: 'Takip et →',
+    empty_comp: 'Henüz rakip yok — yukarıdan ekle 👆',
+    empty_scan: 'İlk tarama sabah 9\'da otomatik başlayacak',
+    no_changes: 'Henüz değişiklik tespit edilmedi 👀',
+  },
+  ru: {
+    nav_how: 'Для кого', nav_works: 'Как работает', nav_pricing: 'Цены',
+    nav_login: 'Войти', nav_start: 'Начать бесплатно →',
+    hero_tag: 'ИИ-разведка конкурентов',
+    hero_h1: 'Соперники двигаются.<br><i>Ты двигаешься быстрее.</i>',
+    hero_desc: 'Sensiva следит за сайтами конкурентов 24/7 — каждое изменение цены, запуск продукта или сигнал найма — и предоставляет стратегические инсайты на основе ИИ.',
+    hero_cta: 'Начать бесплатно →',
+    hero_scroll: 'Прокрутите, чтобы узнать больше',
+    seg_label: 'Создан для',
+    seg_title: 'Три отрасли, где<br><i>разведка — это всё.</i>',
+    seg1_title: 'SaaS и ПО', seg1_desc: 'Отслеживайте страницы цен, релизы функций, журналы изменений и сигналы найма конкурентов.',
+    seg2_title: 'Электронная торговля', seg2_desc: 'Следите за снижением цен, флэш-распродажами, новыми запусками продуктов и кампаниями конкурирующих магазинов.',
+    seg3_title: 'Путешествия и гостиничный бизнес', seg3_desc: 'Наблюдайте за изменениями тарифов, новыми пакетными предложениями и обновлениями программ лояльности.',
+    about_label: 'Что мы делаем',
+    about_h2: 'Хватит угадывать.<br>Начни знать.',
+    about_p: 'Большинство компаний узнают о действиях конкурентов слишком поздно. Sensiva следит за каждой страницей каждый день. Как только что-то меняется — вы получаете чёткий инсайт.',
+    about_cta: 'Смотреть вживую →',
+    process_h2: 'Просто.<br>Мощно.<br>Автоматически.',
+    process_p: 'Настройте один раз. Мы берём на себя сканирование, анализ и оповещения.',
+    step1_t: 'Добавьте конкурентов', step1_d: 'Вставьте любой URL. Страница цен SaaS, интернет-магазин — всё работает.',
+    step2_t: 'Ежедневный мониторинг', step2_d: 'Цены, продукты, функции, вакансии — ничто не ускользнёт.',
+    step3_t: 'ИИ анализирует', step3_d: 'Отраслевой ИИ сообщит, что изменилось и что это значит стратегически.',
+    step4_t: 'Вы действуете первыми', step4_d: 'Чёткая и практичная разведка до того, как конкуренты успеют объявить.',
+    pricing_h2: 'Честные цены.',
+    pricing_p: 'Начните бесплатно. Обновитесь когда готовы.',
+    free_name: 'Бесплатно', free_per: 'навсегда бесплатно', free_cta: 'Начать',
+    pro_name: 'Про', pro_per: 'в месяц', pro_cta: 'Пробный период',
+    agency_name: 'Агентство', agency_per: 'в месяц', agency_cta: 'Связаться',
+    cta_h2: 'Готовы всегда быть<br>на шаг<br><i>впереди?</i>',
+    cta_btn: 'Начать бесплатно →',
+    dash_upgrade: 'Улучшить →', dash_logout: 'Выйти',
+    dash_comp: '🏢 Конкуренты', dash_changes: '⚡ Все изменения', dash_alerts: '🔔 Уведомления', dash_settings: '⚙️ Настройки',
+    add_placeholder_url: 'https://конкурент.com', add_placeholder_name: 'Название (необязательно)', add_btn: 'Отслеживать →',
+    empty_comp: 'Конкурентов пока нет — добавьте выше 👆',
+    empty_scan: 'Первое сканирование запустится автоматически в 9:00',
+    no_changes: 'Изменений пока не обнаружено 👀',
+  }
+};
+
+var curLang = 'en';
+var FLAGS = {en:'🇺🇸',fr:'🇫🇷',tr:'🇹🇷',ru:'🇷🇺'};
+var LANGNAMES = {en:'EN',fr:'FR',tr:'TR',ru:'RU'};
+
+function setLang(lang) {
+  curLang = lang;
+  var t = LANGS[lang];
+  document.getElementById('cur-flag').textContent = FLAGS[lang];
+  document.getElementById('cur-lang').textContent = LANGNAMES[lang];
+
+  // Mark active
+  document.querySelectorAll('.lang-opt').forEach(function(o){o.classList.remove('active');});
+  document.querySelectorAll('.lang-opt').forEach(function(o){
+    if(o.textContent.includes(LANGNAMES[lang])||o.getAttribute('onclick').includes("'"+lang+"'"))o.classList.add('active');
+  });
+
+  // Nav
+  var navLinks = document.querySelectorAll('.nav-a');
+  if(navLinks[0]) navLinks[0].textContent = t.nav_how;
+  if(navLinks[1]) navLinks[1].textContent = t.nav_works;
+  if(navLinks[2]) navLinks[2].textContent = t.nav_pricing;
+  var loginBtn = document.getElementById('nav-login-btn');
+  if(loginBtn) loginBtn.textContent = t.nav_login;
+  var startBtn = document.querySelector('nav .nav-btn:last-child');
+  if(startBtn && !startBtn.id) startBtn.textContent = t.nav_start;
+
+  // Hero
+  var heroTag = document.querySelector('.hero-tag');
+  if(heroTag) heroTag.innerHTML = '<span class="hero-tag-dot"></span> ' + t.hero_tag;
+  var heroH1 = document.querySelector('.hero-h1');
+  if(heroH1) heroH1.innerHTML = t.hero_h1;
+  var heroDesc = document.querySelector('.hero-desc');
+  if(heroDesc) heroDesc.textContent = t.hero_desc;
+  var heroCta = document.querySelector('.hero-ctas .btn-main');
+  if(heroCta) heroCta.innerHTML = t.hero_cta;
+  var scrollTxt = document.querySelector('.scroll-ind');
+  if(scrollTxt) scrollTxt.innerHTML = '<div class="scroll-line"></div> ' + t.hero_scroll;
+
+  // Segments
+  var segLabel = document.querySelector('#segments .rev');
+  if(segLabel) segLabel.textContent = t.seg_label;
+  var segTitle = document.querySelector('#segments h2');
+  if(segTitle) segTitle.innerHTML = t.seg_title;
+  var segTitles = document.querySelectorAll('.seg-title');
+  if(segTitles[0]) segTitles[0].textContent = t.seg1_title;
+  if(segTitles[1]) segTitles[1].textContent = t.seg2_title;
+  if(segTitles[2]) segTitles[2].textContent = t.seg3_title;
+  var segDescs = document.querySelectorAll('.seg-desc');
+  if(segDescs[0]) segDescs[0].textContent = t.seg1_desc;
+  if(segDescs[1]) segDescs[1].textContent = t.seg2_desc;
+  if(segDescs[2]) segDescs[2].textContent = t.seg3_desc;
+
+  // About
+  var aboutLabel = document.querySelector('.sec-label');
+  if(aboutLabel) aboutLabel.textContent = t.about_label;
+  var aboutH2 = document.querySelector('.about-l h2');
+  if(aboutH2) aboutH2.innerHTML = t.about_h2;
+  var aboutP = document.querySelector('.about-l p');
+  if(aboutP) aboutP.textContent = t.about_p;
+  var aboutCta = document.querySelector('.about-l .btn-main');
+  if(aboutCta) aboutCta.textContent = t.about_cta;
+
+  // Process
+  var procH2 = document.querySelector('.process-head h2');
+  if(procH2) procH2.innerHTML = t.process_h2;
+  var procP = document.querySelector('.process-head p');
+  if(procP) procP.textContent = t.process_p;
+  var stepTs = document.querySelectorAll('.step-t');
+  var stepDs = document.querySelectorAll('.step-d');
+  if(stepTs[0]) stepTs[0].textContent = t.step1_t;
+  if(stepTs[1]) stepTs[1].textContent = t.step2_t;
+  if(stepTs[2]) stepTs[2].textContent = t.step3_t;
+  if(stepTs[3]) stepTs[3].textContent = t.step4_t;
+  if(stepDs[0]) stepDs[0].textContent = t.step1_d;
+  if(stepDs[1]) stepDs[1].textContent = t.step2_d;
+  if(stepDs[2]) stepDs[2].textContent = t.step3_d;
+  if(stepDs[3]) stepDs[3].textContent = t.step4_d;
+
+  // Pricing
+  var pricingH2 = document.querySelector('.pricing-head h2');
+  if(pricingH2) pricingH2.textContent = t.pricing_h2;
+  var pricingP = document.querySelector('.pricing-head p');
+  if(pricingP) pricingP.textContent = t.pricing_p;
+  var pcardNames = document.querySelectorAll('.pcard-name');
+  if(pcardNames[0]) pcardNames[0].textContent = t.free_name;
+  if(pcardNames[1]) pcardNames[1].textContent = t.pro_name;
+  if(pcardNames[2]) pcardNames[2].textContent = t.agency_name;
+  var pcardPers = document.querySelectorAll('.pcard-per');
+  if(pcardPers[0]) pcardPers[0].textContent = t.free_per;
+  if(pcardPers[1]) pcardPers[1].textContent = t.pro_per;
+  if(pcardPers[2]) pcardPers[2].textContent = t.agency_per;
+  var pcardBtns = document.querySelectorAll('.pcard-btn');
+  if(pcardBtns[0]) pcardBtns[0].textContent = t.free_cta;
+  if(pcardBtns[1]) pcardBtns[1].textContent = t.pro_cta;
+  if(pcardBtns[2]) pcardBtns[2].textContent = t.agency_cta;
+
+  // CTA bottom
+  var ctaH2 = document.querySelector('.cta-bot h2');
+  if(ctaH2) ctaH2.innerHTML = t.cta_h2;
+  var ctaBtn = document.querySelector('.cta-bot .btn-main');
+  if(ctaBtn) ctaBtn.textContent = t.cta_btn;
+
+  // Dashboard
+  var upgradeBtn = document.querySelector('.dash-nav .dadd-btn:first-of-type');
+  if(upgradeBtn) upgradeBtn.textContent = t.dash_upgrade;
+  var logoutBtn = document.querySelector('.dash-nav .dadd-btn:last-of-type');
+  if(logoutBtn) logoutBtn.textContent = t.dash_logout;
+  var sidebarItems = document.querySelectorAll('.dsidebar-item');
+  if(sidebarItems[0]) sidebarItems[0].textContent = t.dash_comp;
+  if(sidebarItems[1]) sidebarItems[1].textContent = t.dash_changes;
+  if(sidebarItems[2]) sidebarItems[2].textContent = t.dash_alerts;
+  if(sidebarItems[3]) sidebarItems[3].textContent = t.dash_settings;
+
+  // Add competitor form
+  var inUrl = document.getElementById('in-url');
+  if(inUrl) inUrl.placeholder = t.add_placeholder_url;
+  var inName = document.getElementById('in-name');
+  if(inName) inName.placeholder = t.add_placeholder_name;
+  var trackBtn = document.getElementById('track-btn');
+  if(trackBtn) trackBtn.textContent = t.add_btn;
+}
+
 </script>
 
 <!-- AUTH MODAL -->
