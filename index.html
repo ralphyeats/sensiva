@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sensiva — Competitor Intelligence</title>
+<title>Sensiva — AI Competitor Intelligence</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -18,11 +18,13 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--fg);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
 
+/* CURSOR */
 .cur{position:fixed;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
 .cur-ring{position:fixed;width:40px;height:40px;border:1px solid rgba(184,245,74,.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s;}
-body:has(a:hover) .cur, body:has(button:hover) .cur{width:16px;height:16px;}
-body:has(a:hover) .cur-ring, body:has(button:hover) .cur-ring{width:56px;height:56px;border-color:rgba(184,245,74,.6);}
+body:has(a:hover) .cur,body:has(button:hover) .cur{width:16px;height:16px;}
+body:has(a:hover) .cur-ring,body:has(button:hover) .cur-ring{width:56px;height:56px;border-color:rgba(184,245,74,.6);}
 
+/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 56px;mix-blend-mode:difference;}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:1px;color:var(--fg);text-transform:uppercase;}
 .nav-r{display:flex;align-items:center;gap:48px;}
@@ -31,9 +33,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .nav-btn{font-size:13px;font-weight:600;color:var(--bg);background:var(--fg);padding:10px 24px;border-radius:100px;border:none;cursor:none;font-family:'DM Sans',sans-serif;letter-spacing:.3px;transition:background .3s;}
 .nav-btn:hover{background:var(--accent);}
 
+/* HERO */
 .hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 56px 72px;overflow:hidden;}
 .hero-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");pointer-events:none;}
-.hero-gradient{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 80%,rgba(184,245,74,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 20%,rgba(184,245,74,.04) 0%,transparent 50%);pointer-events:none;}
+.hero-gradient{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 20% 80%,rgba(184,245,74,.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 20%,rgba(184,245,74,.04) 0%,transparent 50%);pointer-events:none;animation:gradpulse 6s ease-in-out infinite;}
+@keyframes gradpulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+.hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(184,245,74,.05) 0%,transparent 70%);top:-100px;right:-100px;animation:orb 8s ease-in-out infinite;pointer-events:none;}
+@keyframes orb{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-40px,40px) scale(1.1);}}
 .hero-bgtxt{position:absolute;bottom:-40px;left:-20px;font-family:'Syne',sans-serif;font-size:clamp(160px,22vw,320px);font-weight:800;color:transparent;-webkit-text-stroke:1px rgba(238,238,232,.03);letter-spacing:-12px;white-space:nowrap;user-select:none;pointer-events:none;line-height:1;}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:36px;opacity:0;animation:fadeup .8s .1s forwards;}
 .hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;}
@@ -43,30 +49,46 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .hero-bot{display:flex;align-items:flex-end;justify-content:space-between;opacity:0;animation:fadeup .8s .45s forwards;}
 .hero-desc{font-size:16px;color:var(--muted);max-width:420px;line-height:1.85;font-weight:300;}
 .hero-ctas{display:flex;flex-direction:column;align-items:flex-end;gap:20px;}
-.btn-main{display:inline-flex;align-items:center;gap:12px;padding:18px 36px;background:var(--accent);color:var(--bg);border-radius:100px;border:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:none;letter-spacing:.2px;transition:all .3s;}
+.btn-main{display:inline-flex;align-items:center;gap:12px;padding:18px 36px;background:var(--accent);color:var(--bg);border-radius:100px;border:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:none;letter-spacing:.2px;transition:all .3s;position:relative;overflow:hidden;}
+.btn-main::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.2);transform:translateX(-100%);transition:transform .4s;}
+.btn-main:hover::after{transform:translateX(100%);}
 .btn-main:hover{background:var(--fg);transform:scale(1.03);}
-.btn-ghost{display:inline-flex;align-items:center;gap:12px;padding:18px 36px;background:transparent;color:var(--muted);border-radius:100px;border:1px solid var(--border);font-family:'DM Sans',sans-serif;font-size:15px;cursor:none;transition:all .3s;}
-.btn-ghost:hover{color:var(--fg);border-color:rgba(238,238,232,.3);}
 .scroll-ind{display:flex;align-items:center;gap:12px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
 .scroll-line{width:48px;height:1px;background:var(--border);position:relative;overflow:hidden;}
 .scroll-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--accent);animation:slidein 2s ease-in-out infinite;}
 @keyframes slidein{to{left:100%;}}
 @keyframes fadeup{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
 
+/* TICKER */
 .ticker{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;background:var(--surface);overflow:hidden;}
-.ticker-track{display:flex;gap:56px;width:max-content;animation:tick 25s linear infinite;}
+.ticker-track{display:flex;gap:56px;width:max-content;animation:tick 30s linear infinite;}
 .ticker-item{display:flex;align-items:center;gap:14px;white-space:nowrap;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .ticker-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
+/* SECTIONS */
 section{padding:120px 56px;border-top:1px solid var(--border);}
 
+/* SEGMENTS */
+.segments{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:60px;}
+.seg-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;cursor:default;}
+.seg-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(184,245,74,.06) 0%,transparent 60%);opacity:0;transition:opacity .3s;}
+.seg-card:hover{border-color:rgba(184,245,74,.25);transform:translateY(-4px);}
+.seg-card:hover::before{opacity:1;}
+.seg-icon{font-size:32px;margin-bottom:20px;}
+.seg-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;letter-spacing:-.5px;margin-bottom:12px;}
+.seg-desc{font-size:13px;color:var(--muted);line-height:1.85;}
+.seg-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;}
+.seg-tag{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:100px;background:rgba(184,245,74,.08);color:var(--accent);border:1px solid rgba(184,245,74,.15);}
+
+/* ABOUT */
 .about{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
 .about-l .sec-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:28px;}
 .about-l h2{font-family:'Instrument Serif',serif;font-size:clamp(40px,5vw,68px);line-height:1.05;letter-spacing:-3px;margin-bottom:32px;}
 .about-l p{font-size:15px;color:var(--muted);line-height:1.95;font-weight:300;margin-bottom:40px;}
 .about-r{display:flex;flex-direction:column;gap:14px;}
 
+/* MOCK CARDS */
 .mock{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px;transform:translateX(60px);opacity:0;transition:all .9s cubic-bezier(.16,1,.3,1);}
 .mock.vis{transform:translateX(0);opacity:1;}
 .mock:nth-child(2){transition-delay:.12s;}
@@ -76,10 +98,12 @@ section{padding:120px 56px;border-top:1px solid var(--border);}
 .tag-price{background:rgba(248,113,113,.12);color:#f87171;}
 .tag-prod{background:rgba(184,245,74,.12);color:var(--accent);}
 .tag-content{background:rgba(147,197,253,.12);color:#93c5fd;}
+.tag-hire{background:rgba(251,191,36,.12);color:#fbbf24;}
 .mock-t{font-size:13px;font-weight:500;margin-bottom:6px;line-height:1.4;}
 .mock-ai{font-size:12px;color:var(--muted);font-style:italic;line-height:1.65;}
 .mock-time{font-size:11px;color:var(--muted);}
 
+/* PROCESS */
 .process-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:80px;}
 .process-head h2{font-family:'Instrument Serif',serif;font-size:clamp(44px,6vw,80px);line-height:1.0;letter-spacing:-4px;max-width:560px;}
 .process-head p{font-size:14px;color:var(--muted);max-width:260px;line-height:1.9;}
@@ -91,11 +115,15 @@ section{padding:120px 56px;border-top:1px solid var(--border);}
 .step-t{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:10px;letter-spacing:-.5px;}
 .step-d{font-size:13px;color:var(--muted);line-height:1.8;}
 
+/* NUMBERS */
 .numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);}
-.num-card{background:var(--bg);padding:64px 56px;text-align:center;}
+.num-card{background:var(--bg);padding:64px 56px;text-align:center;position:relative;overflow:hidden;}
+.num-card::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--accent);transition:width .6s cubic-bezier(.16,1,.3,1);}
+.num-card.vis::after{width:40px;}
 .num-val{font-family:'Instrument Serif',serif;font-size:clamp(60px,8vw,100px);line-height:1;letter-spacing:-4px;color:var(--accent);margin-bottom:12px;}
 .num-label{font-size:13px;color:var(--muted);letter-spacing:1px;}
 
+/* PRICING */
 .pricing-head{text-align:center;margin-bottom:80px;}
 .pricing-head h2{font-family:'Instrument Serif',serif;font-size:clamp(48px,7vw,88px);line-height:1.0;letter-spacing:-4px;margin-bottom:16px;}
 .pricing-head p{font-size:15px;color:var(--muted);font-weight:300;}
@@ -117,30 +145,43 @@ section{padding:120px 56px;border-top:1px solid var(--border);}
 .pcard-btn-g{background:transparent;color:var(--fg);border:1px solid var(--border);}
 .pcard-btn-g:hover{border-color:var(--fg);}
 
+/* CTA BOTTOM */
 .cta-bot{text-align:center;background:var(--surface);}
 .cta-bot h2{font-family:'Instrument Serif',serif;font-size:clamp(52px,8vw,108px);line-height:.95;letter-spacing:-5px;margin-bottom:48px;}
 .cta-bot h2 i{font-style:italic;color:var(--accent);}
 
+/* FOOTER */
 footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-items:center;justify-content:space-between;}
 .foot-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:16px;letter-spacing:1px;text-transform:uppercase;}
 .foot-copy{font-size:12px;color:var(--muted);}
 
+/* REVEAL */
 .rev{opacity:0;transform:translateY(48px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
 .rev.vis{opacity:1;transform:translateY(0);}
 .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}
+
+/* FLOATING CARDS ANIMATION */
+@keyframes floatup{0%{opacity:0;transform:translateY(20px);}10%{opacity:1;transform:translateY(0);}80%{opacity:1;transform:translateY(-60px);}100%{opacity:0;transform:translateY(-80px);}}
+.float-card{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;font-size:12px;pointer-events:none;animation:floatup 4s ease-in-out infinite;white-space:nowrap;}
+.float-card:nth-child(1){left:10%;bottom:20%;animation-delay:0s;}
+.float-card:nth-child(2){left:60%;bottom:30%;animation-delay:1.3s;}
+.float-card:nth-child(3){left:35%;bottom:15%;animation-delay:2.6s;}
+.float-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+.float-text{color:var(--fg);}
 
 /* ─── DASHBOARD ─── */
 #dash{display:none;min-height:100vh;padding-top:73px;}
 .dash-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:rgba(8,8,10,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
 .dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 73px);}
-.dsidebar{background:var(--surface);border-right:1px solid var(--border);padding:28px 14px;position:sticky;top:73px;height:calc(100vh - 73px);}
+.dsidebar{background:var(--surface);border-right:1px solid var(--border);padding:28px 14px;position:sticky;top:73px;height:calc(100vh - 73px);overflow-y:auto;}
 .dsidebar-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;margin-bottom:3px;}
 .dsidebar-item:hover,.dsidebar-item.act{background:rgba(184,245,74,.07);color:var(--fg);}
 .dsidebar-item.act{color:var(--accent);}
 .dmain{padding:40px;overflow-y:auto;}
 .dtitle{font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:32px;}
 .dstats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
-.dstat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;}
+.dstat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;transition:border-color .3s;}
+.dstat:hover{border-color:rgba(184,245,74,.2);}
 .dstat-l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
 .dstat-v{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;letter-spacing:-2px;}
 .dstat-v.g{color:var(--accent);}
@@ -151,9 +192,10 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 .dinput{flex:1;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--fg);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
 .dinput:focus{border-color:var(--accent);}
 .dinput::placeholder{color:var(--muted);}
-.dadd-btn{padding:12px 20px;background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s;}
-.dadd-btn:hover{background:var(--fg);}
-.dcomp{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:14px;transition:border-color .3s;}
+.dadd-btn{padding:12px 20px;background:var(--accent);color:var(--bg);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.dadd-btn:hover{background:var(--fg);transform:scale(1.02);}
+.dcomp{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:14px;transition:all .3s;animation:slideIn .4s ease-out;}
+@keyframes slideIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 .dcomp:hover{border-color:rgba(184,245,74,.25);}
 .dcomp-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .dcomp-info{display:flex;align-items:center;gap:14px;}
@@ -162,7 +204,8 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 .dcomp-url{font-size:12px;color:var(--muted);margin-top:2px;}
 .dbadge{display:flex;align-items:center;gap:6px;font-size:11px;padding:4px 12px;border-radius:100px;}
 .dbadge.ok{background:rgba(184,245,74,.1);color:var(--accent);border:1px solid rgba(184,245,74,.2);}
-.dchange{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);margin-bottom:8px;}
+.dchange{display:flex;align-items:flex-start;gap:12px;padding:13px 14px;background:var(--bg);border-radius:10px;border:1px solid var(--border);margin-bottom:8px;transition:border-color .2s;animation:slideIn .3s ease-out;}
+.dchange:hover{border-color:rgba(184,245,74,.15);}
 .dchg-tag{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap;margin-top:2px;}
 .dchg-tag.price{background:rgba(248,113,113,.14);color:#f87171;}
 .dchg-tag.product{background:rgba(184,245,74,.14);color:var(--accent);}
@@ -174,17 +217,20 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 .dchg-time{font-size:11px;color:var(--muted);white-space:nowrap;margin-left:auto;}
 .empty-state{padding:60px;text-align:center;color:var(--muted);font-size:14px;line-height:2;}
 .loading{padding:40px;text-align:center;color:var(--muted);font-size:13px;}
-.scan-btn{padding:8px 16px;background:transparent;color:var(--accent);border:1px solid rgba(184,245,74,.3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;}
-.scan-btn:hover{background:rgba(184,245,74,.1);}
 .del-btn{padding:6px 12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;}
 .del-btn:hover{color:#f87171;border-color:rgba(248,113,113,.3);}
+
+/* PULSE DOT */
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);position:relative;display:inline-block;}
+.pulse-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--accent);animation:pulse 2s ease-out infinite;}
+@keyframes pulse{0%{transform:scale(1);opacity:.8;}100%{transform:scale(2.5);opacity:0;}}
 
 @media(max-width:768px){
   nav,.hero{padding-left:24px;padding-right:24px;}
   section{padding:80px 24px;}
   .about,.process-head{flex-direction:column;grid-template-columns:1fr;}
   .steps{grid-template-columns:1fr 1fr;}
-  .numbers,.pcards{grid-template-columns:1fr;}
+  .numbers,.pcards,.segments{grid-template-columns:1fr;}
   .hero-bot{flex-direction:column;align-items:flex-start;gap:40px;}
   .dash-layout{grid-template-columns:1fr;}
   .dsidebar{display:none;}
@@ -204,6 +250,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
 <nav>
   <div class="logo">Sensiva</div>
   <div class="nav-r">
+    <a class="nav-a" href="#segments">Who it's for</a>
     <a class="nav-a" href="#process">How it works</a>
     <a class="nav-a" href="#pricing">Pricing</a>
     <button class="nav-btn" style="background:transparent;color:var(--fg);border:1px solid rgba(238,238,232,.2);margin-right:-32px;" onclick="openAuthModal('login')">Log in</button>
@@ -211,14 +258,31 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-noise"></div>
   <div class="hero-gradient"></div>
+  <div class="hero-orb"></div>
   <div class="hero-bgtxt">SENSIVA</div>
+
+  <!-- Floating alert cards -->
+  <div class="float-card" style="left:8%;bottom:28%">
+    <div class="float-label">Price change</div>
+    <div class="float-text">Shopify rival dropped plan $49→$29</div>
+  </div>
+  <div class="float-card" style="left:62%;bottom:32%">
+    <div class="float-label">New feature</div>
+    <div class="float-text">Competitor launched AI checkout</div>
+  </div>
+  <div class="float-card" style="left:38%;bottom:18%">
+    <div class="float-label">Hiring signal</div>
+    <div class="float-text">Rival posted 12 new ML engineer roles</div>
+  </div>
+
   <div class="hero-tag"><span class="hero-tag-dot"></span> AI Competitor Intelligence</div>
-  <h1 class="hero-h1">Know every<br>move your rivals<br>make. <i>Before<br>it's too late.</i></h1>
+  <h1 class="hero-h1">Your rivals move.<br><i>You move faster.</i></h1>
   <div class="hero-bot">
-    <p class="hero-desc">Sensiva watches your competitors 24/7 — every price change, every new product, every update — and tells you exactly what it means for your business.</p>
+    <p class="hero-desc">Sensiva watches competitor websites 24/7 — every price change, product launch, or hiring signal — and delivers AI-powered strategic insights before you even notice.</p>
     <div class="hero-ctas">
       <button class="btn-main" onclick="showDash()">Get started free <span>→</span></button>
       <div class="scroll-ind"><div class="scroll-line"></div> Scroll to explore</div>
@@ -226,76 +290,124 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </section>
 
+<!-- TICKER -->
 <div class="ticker">
   <div class="ticker-track">
-    <div class="ticker-item"><span class="ticker-dot"></span> Price changes detected</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> New products tracked</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> SaaS pricing changes</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> E-commerce promotions</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Travel deal alerts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Hiring signals</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> New feature launches</div>
     <div class="ticker-item"><span class="ticker-dot"></span> AI-powered insights</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Real-time alerts</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Any website, anywhere</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Action recommendations</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Job listing signals</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Content strategy shifts</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Price changes detected</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> New products tracked</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Positioning shifts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Real-time intelligence</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> SaaS pricing changes</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> E-commerce promotions</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Travel deal alerts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Hiring signals</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> New feature launches</div>
     <div class="ticker-item"><span class="ticker-dot"></span> AI-powered insights</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Real-time alerts</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Any website, anywhere</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Action recommendations</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Job listing signals</div>
-    <div class="ticker-item"><span class="ticker-dot"></span> Content strategy shifts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Positioning shifts</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> Real-time intelligence</div>
   </div>
 </div>
 
+<!-- SEGMENTS -->
+<section id="segments">
+  <div style="text-align:center;margin-bottom:16px;" class="rev">
+    <div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);">Built for</div>
+  </div>
+  <h2 class="rev d1" style="font-family:'Instrument Serif',serif;font-size:clamp(40px,5vw,68px);line-height:1.05;letter-spacing:-3px;text-align:center;margin-bottom:0;">Three industries where<br><i>intelligence is everything.</i></h2>
+  <div class="segments">
+    <div class="seg-card rev d1">
+      <div class="seg-icon">⚡</div>
+      <div class="seg-title">SaaS & Software</div>
+      <div class="seg-desc">Track competitor pricing pages, feature releases, changelog updates, and hiring signals. Know when a rival is about to ship something big — before they announce it.</div>
+      <div class="seg-tags">
+        <span class="seg-tag">Pricing</span>
+        <span class="seg-tag">Features</span>
+        <span class="seg-tag">Hiring</span>
+        <span class="seg-tag">Positioning</span>
+      </div>
+    </div>
+    <div class="seg-card rev d2">
+      <div class="seg-icon">🛍️</div>
+      <div class="seg-title">E-Commerce</div>
+      <div class="seg-desc">Monitor competitor stores for price drops, flash sales, new product launches, and homepage campaigns. React to promotions before your customers switch.</div>
+      <div class="seg-tags">
+        <span class="seg-tag">Price drops</span>
+        <span class="seg-tag">Promotions</span>
+        <span class="seg-tag">New products</span>
+        <span class="seg-tag">Campaigns</span>
+      </div>
+    </div>
+    <div class="seg-card rev d3">
+      <div class="seg-icon">✈️</div>
+      <div class="seg-title">Travel & Hospitality</div>
+      <div class="seg-desc">Watch rival booking platforms and hotels for rate changes, new package deals, seasonal promotions, and loyalty program updates. Stay competitive on every route.</div>
+      <div class="seg-tags">
+        <span class="seg-tag">Rate changes</span>
+        <span class="seg-tag">Packages</span>
+        <span class="seg-tag">Deals</span>
+        <span class="seg-tag">Availability</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
 <section>
   <div class="about">
     <div class="about-l">
       <div class="sec-label rev">What we do</div>
       <h2 class="rev d1">Stop guessing.<br>Start knowing.</h2>
-      <p class="rev d2">Most businesses find out about competitor moves too late — when customers are already leaving. Sensiva watches every page, every hour. The moment something changes, you know — and you know exactly what to do about it.</p>
+      <p class="rev d2">Most businesses find out about competitor moves too late — when customers are already leaving. Sensiva watches every page, every day. The moment something changes, you get a clear AI insight telling you exactly what to do.</p>
       <button class="btn-main rev d3" onclick="showDash()" style="display:inline-flex">See it live →</button>
     </div>
     <div class="about-r">
       <div class="mock">
-        <div class="mock-top"><span class="mock-tag tag-price">Price change</span><span class="mock-time">2 min ago</span></div>
-        <div class="mock-t">Acme Corp dropped Pro plan $49 → $39/mo</div>
-        <div class="mock-ai">💡 They're competing on price aggressively. Highlight your value-adds instead of matching the cut.</div>
+        <div class="mock-top"><span class="mock-tag tag-price">Price change · SaaS</span><span class="mock-time">2 min ago</span></div>
+        <div class="mock-t">Notion dropped Pro plan $16 → $10/mo</div>
+        <div class="mock-ai">💡 Aggressive price cut targeting SMB segment. Consider highlighting your unique features rather than matching — a race to bottom hurts margins.</div>
       </div>
       <div class="mock">
-        <div class="mock-top"><span class="mock-tag tag-prod">New product</span><span class="mock-time">1h ago</span></div>
-        <div class="mock-t">Rival Co launched "Team Collaboration" feature</div>
-        <div class="mock-ai">💡 Moving upmarket to enterprise. Review your own enterprise positioning now.</div>
+        <div class="mock-top"><span class="mock-tag tag-prod">New product · E-commerce</span><span class="mock-time">1h ago</span></div>
+        <div class="mock-t">Rival store launched "Summer Flash Sale — 40% off everything"</div>
+        <div class="mock-ai">💡 Peak season push. Launch a counter-promotion or emphasize superior quality/delivery to retain price-sensitive shoppers.</div>
       </div>
       <div class="mock">
-        <div class="mock-top"><span class="mock-tag tag-content">Job listings</span><span class="mock-time">3h ago</span></div>
-        <div class="mock-t">Competitor X added 8 new engineering roles</div>
-        <div class="mock-ai">💡 Major hiring signal. A large product push is likely in the next 3–6 months.</div>
+        <div class="mock-top"><span class="mock-tag tag-hire">Hiring · SaaS</span><span class="mock-time">4h ago</span></div>
+        <div class="mock-t">Competitor posted 8 new ML engineer roles</div>
+        <div class="mock-ai">💡 Heavy AI investment incoming. Expect a major product update in 3–6 months — prepare your roadmap and messaging now.</div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- NUMBERS -->
 <section style="padding:0;border-top:1px solid var(--border);">
   <div class="numbers">
     <div class="num-card rev"><div class="num-val">24/7</div><div class="num-label">Always watching</div></div>
-    <div class="num-card rev d1"><div class="num-val">< 1h</div><div class="num-label">Average detection time</div></div>
+    <div class="num-card rev d1"><div class="num-val">3</div><div class="num-label">Industries covered</div></div>
     <div class="num-card rev d2"><div class="num-val">∞</div><div class="num-label">Websites we can track</div></div>
   </div>
 </section>
 
+<!-- PROCESS -->
 <section id="process">
   <div class="process-head">
     <h2 class="rev">Simple.<br>Powerful.<br>Automatic.</h2>
     <p class="rev d1">Set it up once. We handle scanning, analyzing, and alerting — you just act on the intelligence.</p>
   </div>
   <div class="steps">
-    <div class="step rev"><div class="step-n">01</div><div class="step-t">Add competitors</div><p class="step-d">Paste any URL. No integrations, no permissions, no setup complexity.</p></div>
-    <div class="step rev d1"><div class="step-n">02</div><div class="step-t">We watch 24/7</div><p class="step-d">Every page, every hour. Prices, products, content, job listings — nothing slips through.</p></div>
-    <div class="step rev d2"><div class="step-n">03</div><div class="step-t">AI analyzes</div><p class="step-d">We don't just detect changes — our AI tells you what each change means strategically.</p></div>
-    <div class="step rev d3"><div class="step-n">04</div><div class="step-t">You act first</div><p class="step-d">Get instant alerts with clear recommendations. React before anyone else even notices.</p></div>
+    <div class="step rev"><div class="step-n">01</div><div class="step-t">Add competitors</div><p class="step-d">Paste any URL. SaaS pricing page, e-commerce store, travel booking site — anything works.</p></div>
+    <div class="step rev d1"><div class="step-n">02</div><div class="step-t">We watch daily</div><p class="step-d">Prices, products, features, job listings — nothing slips through our scanner.</p></div>
+    <div class="step rev d2"><div class="step-n">03</div><div class="step-t">AI analyzes</div><p class="step-d">Industry-specific AI tells you what changed and what it means strategically for your business.</p></div>
+    <div class="step rev d3"><div class="step-n">04</div><div class="step-t">You act first</div><p class="step-d">Get clear, actionable intelligence. React before your competitors even finish their announcement.</p></div>
   </div>
 </section>
 
+<!-- PRICING -->
 <section id="pricing">
   <div class="pricing-head rev">
     <h2>Honest pricing.</h2>
@@ -306,7 +418,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       <div class="pcard-name">Free</div>
       <div class="pcard-price"><sup>$</sup>0</div>
       <div class="pcard-per">forever free</div>
-      <ul class="pcard-feats"><li>3 competitors</li><li>Daily scans</li><li>Email alerts</li><li>7-day history</li></ul>
+      <ul class="pcard-feats"><li>3 competitors</li><li>Daily scans</li><li>AI insights</li><li>7-day history</li></ul>
       <button class="pcard-btn pcard-btn-g" onclick="showDash()">Get started</button>
     </div>
     <div class="pcard featured rev d1">
@@ -314,7 +426,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
       <div class="pcard-name">Pro</div>
       <div class="pcard-price"><sup>$</sup>29</div>
       <div class="pcard-per">per month</div>
-      <ul class="pcard-feats"><li>20 competitors</li><li>Hourly scans</li><li>Email + Slack alerts</li><li>AI analysis & insights</li><li>90-day history</li></ul>
+      <ul class="pcard-feats"><li>20 competitors</li><li>Hourly scans</li><li>Email + Slack alerts</li><li>Advanced AI analysis</li><li>90-day history</li></ul>
       <button class="pcard-btn pcard-btn-p" onclick="showDash()">Start free trial</button>
     </div>
     <div class="pcard rev d2">
@@ -327,6 +439,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   </div>
 </section>
 
+<!-- CTA -->
 <section class="cta-bot">
   <h2 class="rev">Ready to always<br>be one step<br><i>ahead?</i></h2>
   <button class="btn-main rev d1" onclick="showDash()" style="font-size:17px;padding:22px 52px;display:inline-flex">Start for free →</button>
@@ -344,6 +457,7 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
   <nav class="dash-nav">
     <div class="logo">Sensiva</div>
     <div style="display:flex;align-items:center;gap:14px;">
+      <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);"><span class="pulse-dot"></span></span>
       <span style="font-size:12px;color:var(--muted);" id="plan-badge">Free — 0/3 used</span>
       <button class="dadd-btn" style="font-size:12px;padding:8px 18px;">Upgrade →</button>
       <button class="dadd-btn" style="background:var(--surface);color:var(--fg);border:1px solid var(--border);" onclick="doLogout()">Log out</button>
@@ -359,8 +473,6 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
     </aside>
 
     <main class="dmain">
-
-      <!-- COMPETITORS TAB -->
       <div id="tab-comp">
         <div class="dtitle">Competitors</div>
         <div class="dstats">
@@ -377,16 +489,14 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
             <button class="dadd-btn" id="track-btn" onclick="addComp()">Track →</button>
           </div>
         </div>
-        <div id="comp-list"><div class="loading">Loading competitors...</div></div>
+        <div id="comp-list"><div class="loading">Loading...</div></div>
       </div>
 
-      <!-- CHANGES TAB -->
       <div id="tab-changes" style="display:none">
         <div class="dtitle">All Changes</div>
-        <div id="all-chg"><div class="loading">Loading changes...</div></div>
+        <div id="all-chg"><div class="loading">Loading...</div></div>
       </div>
 
-      <!-- ALERTS TAB -->
       <div id="tab-alerts" style="display:none">
         <div class="dtitle">Alert Settings</div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:480px">
@@ -396,13 +506,12 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> Price changes</label>
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" checked style="accent-color:var(--accent)"> New products / features</label>
             <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> Content updates</label>
-            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> Job listing changes</label>
+            <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);cursor:pointer"><input type="checkbox" style="accent-color:var(--accent)"> Hiring signals</label>
           </div>
           <button class="dadd-btn">Save settings</button>
         </div>
       </div>
 
-      <!-- SETTINGS TAB -->
       <div id="tab-settings" style="display:none">
         <div class="dtitle">Settings</div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;max-width:480px">
@@ -413,31 +522,29 @@ footer{border-top:1px solid var(--border);padding:36px 56px;display:flex;align-i
           <button class="dadd-btn">Upgrade to Pro →</button>
         </div>
       </div>
-
     </main>
   </div>
 </div>
 
 <script>
-// ── SUPABASE ──
 const SUPA_URL='https://cpouxavypczsggfylhpp.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwb3V4YXZ5cGN6c2dnZnlsaHBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyOTk4OTIsImV4cCI6MjA4ODg3NTg5Mn0.lHAo4Q0Ey1Hpr4_jgNPp2I8JKz0Hh4sJiL_o6_XMT6k';
 const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 var currentUser=null;
 
-// ── CURSOR ──
+// CURSOR
 var cx=0,cy=0,rx=0,ry=0;
 var cur=document.getElementById('cur'),ring=document.getElementById('curring');
 document.addEventListener('mousemove',function(e){cx=e.clientX;cy=e.clientY;cur.style.left=cx+'px';cur.style.top=cy+'px';});
 (function anim(){rx+=(cx-rx)*.5;ry+=(cy-ry)*.5;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
 
-// ── SCROLL REVEAL ──
+// SCROLL REVEAL
 var obs=new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});
 },{threshold:.08});
-document.querySelectorAll('.rev,.mock').forEach(function(el){obs.observe(el);});
+document.querySelectorAll('.rev,.mock,.num-card').forEach(function(el){obs.observe(el);});
 
-// ── HELPERS ──
+// HELPERS
 function timeAgo(dateStr){
   if(!dateStr)return 'Never';
   var diff=Math.floor((Date.now()-new Date(dateStr))/1000);
@@ -446,14 +553,18 @@ function timeAgo(dateStr){
   if(diff<86400)return Math.floor(diff/3600)+'h ago';
   return Math.floor(diff/86400)+'d ago';
 }
+function escHtml(s){
+  if(!s)return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-// ── AUTH ──
+// AUTH
 async function doSignup(){
   var email=document.getElementById('signup-email').value;
   var pass=document.getElementById('signup-pass').value;
   if(!email||!pass){alert('Email ve şifre girin.');return;}
   var btn=document.getElementById('signup-btn');
-  btn.textContent='Creating account...';btn.disabled=true;
+  btn.textContent='Creating...';btn.disabled=true;
   var {data,error}=await sb.auth.signUp({email,password:pass});
   btn.textContent='Create account';btn.disabled=false;
   if(error){alert('Error: '+error.message);return;}
@@ -470,15 +581,10 @@ async function doLogin(){
   var {data,error}=await sb.auth.signInWithPassword({email,password:pass});
   btn.textContent='Log in';btn.disabled=false;
   if(error){alert('Hata: '+error.message);return;}
-  currentUser=data.user;
-  closeAuthModal();
-  showDash();
 }
 
 async function doLogout(){
   await sb.auth.signOut();
-  currentUser=null;
-  showLanding();
 }
 
 function openAuthModal(type){
@@ -488,11 +594,27 @@ function openAuthModal(type){
 }
 function closeAuthModal(){document.getElementById('auth-modal').style.display='none';}
 
-sb.auth.getSession().then(function(res){
-  if(res.data.session){currentUser=res.data.session.user;}
+// SESSION - auto redirect
+sb.auth.onAuthStateChange(function(event,session){
+  if(session){
+    currentUser=session.user;
+    closeAuthModal();
+    showDash();
+  } else {
+    currentUser=null;
+    showLanding();
+  }
 });
 
-// ── NAV ──
+// Check existing session on load
+sb.auth.getSession().then(function(res){
+  if(res.data.session){
+    currentUser=res.data.session.user;
+    showDash();
+  }
+});
+
+// NAV
 function showDash(){
   if(!currentUser){openAuthModal('signup');return;}
   document.getElementById('landing').style.display='none';
@@ -511,7 +633,7 @@ function showLanding(){
   cur.style.display='block';ring.style.display='block';
 }
 
-// ── TABS ──
+// TABS
 function setTab(el,tab){
   document.querySelectorAll('.dsidebar-item').forEach(function(i){i.classList.remove('act');});
   el.classList.add('act');
@@ -520,35 +642,25 @@ function setTab(el,tab){
   if(tab==='changes')loadAllChanges();
 }
 
-// ── LOAD COMPETITORS FROM SUPABASE ──
+// LOAD COMPETITORS
 async function loadComps(){
   var {data:comps,error}=await sb.from('competitors').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
   if(error){console.error(error);return;}
-
-  // Update stats
   document.getElementById('s-tot').textContent=comps?comps.length:0;
   document.getElementById('plan-badge').textContent='Free — '+(comps?comps.length:0)+'/3 used';
-
-  // Last scan time
   var lastScan=comps&&comps.length>0?comps.reduce(function(a,b){return new Date(a.last_scanned||0)>new Date(b.last_scanned||0)?a:b;},comps[0]):null;
   document.getElementById('s-last').textContent=lastScan&&lastScan.last_scanned?timeAgo(lastScan.last_scanned):'Never';
-
-  // Load change counts
   var {data:changes}=await sb.from('changes').select('id,competitor_id').eq('user_id',currentUser.id);
   document.getElementById('s-chg').textContent=changes?changes.length:0;
-
-  // Build change count map
   var chgMap={};
   if(changes)changes.forEach(function(c){chgMap[c.competitor_id]=(chgMap[c.competitor_id]||0)+1;});
-
   renderComps(comps||[],chgMap);
 }
 
-// ── RENDER COMPETITORS ──
 function renderComps(comps,chgMap){
   var el=document.getElementById('comp-list');
   if(comps.length===0){
-    el.innerHTML='<div class="empty-state">No competitors yet — add one above 👆<br><span style="font-size:12px">Your first scan will run automatically tonight at 9am</span></div>';
+    el.innerHTML='<div class="empty-state">No competitors yet — add one above 👆<br><span style="font-size:12px">Your first scan will run automatically at 9am</span></div>';
     return;
   }
   el.innerHTML=comps.map(function(c){
@@ -557,44 +669,28 @@ function renderComps(comps,chgMap){
     var chgHtml=chgCount>0
       ?'<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#fbbf24;margin-bottom:4px">⚡ '+chgCount+' change'+(chgCount>1?'s':'')+' detected</div>'
       :'<div style="font-size:12px;color:var(--muted);margin-bottom:4px">👁️ Watching — no changes yet</div>';
-    return '<div class="dcomp"><div class="dcomp-h"><div class="dcomp-info"><div class="dcomp-av">'+initials+'</div><div><div class="dcomp-name">'+escHtml(c.name||c.url)+'</div><div class="dcomp-url">'+escHtml(c.url)+'</div></div></div><div style="display:flex;gap:8px;align-items:center"><span class="dbadge ok">● Watching</span><button class="del-btn" onclick="deleteComp(\''+c.id+'\')">Remove</button></div></div>'
-      +chgHtml
-      +'<div style="font-size:11px;color:var(--muted)">Last scanned: '+timeAgo(c.last_scanned)+'</div></div>';
+    return '<div class="dcomp"><div class="dcomp-h"><div class="dcomp-info"><div class="dcomp-av">'+initials+'</div><div><div class="dcomp-name">'+escHtml(c.name||c.url)+'</div><div class="dcomp-url">'+escHtml(c.url)+'</div></div></div><div style="display:flex;gap:8px;align-items:center"><span class="dbadge ok">● Watching</span><button class="del-btn" onclick="deleteComp(\''+c.id+'\')">Remove</button></div></div>'+chgHtml+'<div style="font-size:11px;color:var(--muted)">Last scanned: '+timeAgo(c.last_scanned)+'</div></div>';
   }).join('');
 }
 
-// ── ADD COMPETITOR ──
 async function addComp(){
   var url=document.getElementById('in-url').value.trim();
   var name=document.getElementById('in-name').value.trim();
   if(!url)return;
   if(!url.startsWith('http'))url='https://'+url;
-
-  // Check limit
   var {count}=await sb.from('competitors').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id);
-  if(count>=3){alert('Free plan: 3 competitors max. Upgrade to Pro for more!');return;}
-
+  if(count>=3){alert('Free plan: 3 competitors max. Upgrade to Pro!');return;}
   var btn=document.getElementById('track-btn');
   btn.textContent='Adding...';btn.disabled=true;
-
   var domain=url.replace(/https?:\/\//,'').split('/')[0];
-  var {error}=await sb.from('competitors').insert({
-    user_id:currentUser.id,
-    url:url,
-    name:name||domain,
-    last_content:null,
-    last_scanned:null
-  });
-
+  var {error}=await sb.from('competitors').insert({user_id:currentUser.id,url:url,name:name||domain,last_content:null,last_scanned:null});
   btn.textContent='Track →';btn.disabled=false;
-
   if(error){alert('Error: '+error.message);return;}
   document.getElementById('in-url').value='';
   document.getElementById('in-name').value='';
   loadComps();
 }
 
-// ── DELETE COMPETITOR ──
 async function deleteComp(id){
   if(!confirm('Remove this competitor?'))return;
   await sb.from('changes').delete().eq('competitor_id',id);
@@ -602,64 +698,39 @@ async function deleteComp(id){
   loadComps();
 }
 
-// ── LOAD ALL CHANGES ──
 async function loadAllChanges(){
   var el=document.getElementById('all-chg');
   el.innerHTML='<div class="loading">Loading changes...</div>';
-
-  var {data:changes,error}=await sb.from('changes')
-    .select('*, competitors(name,url)')
-    .eq('user_id',currentUser.id)
-    .order('detected_at',{ascending:false})
-    .limit(50);
-
+  var {data:changes,error}=await sb.from('changes').select('*, competitors(name,url)').eq('user_id',currentUser.id).order('detected_at',{ascending:false}).limit(50);
   if(error){el.innerHTML='<div class="empty-state">Error loading changes</div>';return;}
   if(!changes||changes.length===0){
     el.innerHTML='<div class="empty-state">No changes detected yet 👀<br><span style="font-size:12px">Changes will appear here after competitors are scanned</span></div>';
     return;
   }
-
   el.innerHTML=changes.map(function(ch){
     var compName=ch.competitors?ch.competitors.name:'Unknown';
     var tagClass=ch.type||'other';
     return '<div class="dchange"><span class="dchg-tag '+tagClass+'">'+escHtml(ch.type||'other')+'</span><div style="flex:1"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">'+escHtml(compName)+'</div><div class="dchg-txt">'+escHtml(ch.summary||'')+'</div><div class="dchg-ai">'+escHtml(ch.insight||'')+'</div></div><div class="dchg-time">'+timeAgo(ch.detected_at)+'</div></div>';
   }).join('');
 }
-
-function escHtml(s){
-  if(!s)return '';
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
 </script>
 
 <!-- AUTH MODAL -->
-<div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:9000;align-items:center;justify-content:center;">
-  <div id="auth-signup" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:440px;max-width:90vw;">
+<div id="auth-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);z-index:9000;align-items:center;justify-content:center;">
+  <div id="auth-signup" style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:440px;max-width:90vw;animation:fadeup .4s ease-out;">
     <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:8px;">Create account</div>
     <div style="font-size:14px;color:var(--muted);margin-bottom:32px;">Free forever. No credit card required.</div>
-    <div style="margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Email</div>
-      <input id="signup-email" class="dinput" type="email" placeholder="you@company.com" style="width:100%">
-    </div>
-    <div style="margin-bottom:24px;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Password</div>
-      <input id="signup-pass" class="dinput" type="password" placeholder="Min 6 characters" style="width:100%">
-    </div>
+    <div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Email</div><input id="signup-email" class="dinput" type="email" placeholder="you@company.com" style="width:100%"></div>
+    <div style="margin-bottom:24px;"><div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Password</div><input id="signup-pass" class="dinput" type="password" placeholder="Min 6 characters" style="width:100%"></div>
     <button id="signup-btn" class="dadd-btn" style="width:100%;padding:14px;font-size:15px;" onclick="doSignup()">Create account →</button>
     <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">Already have an account? <span style="color:var(--accent);cursor:pointer;" onclick="document.getElementById('auth-signup').style.display='none';document.getElementById('auth-login').style.display='block'">Log in</span></div>
     <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:var(--muted);cursor:pointer;" onclick="closeAuthModal()">← Back</span></div>
   </div>
-  <div id="auth-login" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:440px;max-width:90vw;">
+  <div id="auth-login" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px;width:440px;max-width:90vw;animation:fadeup .4s ease-out;">
     <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:700;letter-spacing:-1px;margin-bottom:8px;">Welcome back</div>
     <div style="font-size:14px;color:var(--muted);margin-bottom:32px;">Log in to your Sensiva account</div>
-    <div style="margin-bottom:14px;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Email</div>
-      <input id="login-email" class="dinput" type="email" placeholder="you@company.com" style="width:100%">
-    </div>
-    <div style="margin-bottom:24px;">
-      <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Password</div>
-      <input id="login-pass" class="dinput" type="password" placeholder="••••••••" style="width:100%">
-    </div>
+    <div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Email</div><input id="login-email" class="dinput" type="email" placeholder="you@company.com" style="width:100%"></div>
+    <div style="margin-bottom:24px;"><div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Password</div><input id="login-pass" class="dinput" type="password" placeholder="••••••••" style="width:100%"></div>
     <button id="login-btn" class="dadd-btn" style="width:100%;padding:14px;font-size:15px;" onclick="doLogin()">Log in →</button>
     <div style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">No account? <span style="color:var(--accent);cursor:pointer;" onclick="document.getElementById('auth-login').style.display='none';document.getElementById('auth-signup').style.display='block'">Sign up free</span></div>
     <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:var(--muted);cursor:pointer;" onclick="closeAuthModal()">← Back</span></div>
