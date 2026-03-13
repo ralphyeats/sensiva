@@ -14,7 +14,6 @@ async function fetchPage(url) {
       signal: AbortSignal.timeout(10000)
     });
     const html = await res.text();
-    // Extract visible text only (strip tags)
     return html
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '')
@@ -74,15 +73,13 @@ Analyze what changed and what it means strategically. Respond in JSON only:
   }
 }
 
-export default async function handler(req, res) {
-  // Allow manual trigger via GET, or cron via any method
+module.exports = async function handler(req, res) {
   if (req.method !== 'GET' && req.headers.authorization !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
   console.log('Scraper started at', new Date().toISOString());
 
-  // Get all competitors
   const { data: competitors, error } = await supabase
     .from('competitors')
     .select('*');
@@ -105,11 +102,9 @@ export default async function handler(req, res) {
 
     const oldContent = comp.last_content || '';
     const hasChanged = oldContent && oldContent !== newContent &&
-      // Simple similarity check — if more than 5% different
       (Math.abs(oldContent.length - newContent.length) > 50 ||
        oldContent.substring(0, 500) !== newContent.substring(0, 500));
 
-    // Update last_content
     await supabase
       .from('competitors')
       .update({ last_content: newContent, last_scanned: new Date().toISOString() })
@@ -136,4 +131,4 @@ export default async function handler(req, res) {
 
   console.log('Scraper done:', results);
   return res.json({ scanned: competitors.length, results });
-}
+};
